@@ -1,0 +1,261 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/resume/', label: 'Resume' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/architecture/', label: 'Architecture' },
+  { href: '/contact/', label: 'Contact' },
+];
+
+function isActive(href: string, current: string): boolean {
+  if (href === '/') return current === '/';
+  return current.startsWith(href);
+}
+---
+
+<nav class="main-nav" aria-label="Main navigation">
+  <button
+    class="nav-toggle"
+    aria-expanded="false"
+    aria-controls="nav-menu"
+    aria-label="Toggle navigation menu"
+    type="button"
+  >
+    <span class="nav-toggle-icon" aria-hidden="true"></span>
+  </button>
+  <ul id="nav-menu" class="nav-menu" role="list">
+    {navLinks.map((link) => (
+      <li>
+        <a
+          href={link.href}
+          aria-current={isActive(link.href, currentPath) ? 'page' : undefined}
+          class:list={['nav-link', { active: isActive(link.href, currentPath) }]}
+        >
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--space-sm);
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .nav-toggle:hover {
+    background-color: var(--color-bg-alt);
+  }
+
+  .nav-toggle:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .nav-toggle-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-text);
+    position: relative;
+    transition: background-color var(--transition-fast);
+  }
+
+  .nav-toggle-icon::before,
+  .nav-toggle-icon::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-text);
+    position: absolute;
+    left: 0;
+    transition: transform var(--transition-base);
+  }
+
+  .nav-toggle-icon::before {
+    top: -7px;
+  }
+
+  .nav-toggle-icon::after {
+    top: 7px;
+  }
+
+  /* Animate to X when open */
+  .nav-toggle[aria-expanded='true'] .nav-toggle-icon {
+    background-color: transparent;
+  }
+
+  .nav-toggle[aria-expanded='true'] .nav-toggle-icon::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded='true'] .nav-toggle-icon::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    list-style: none;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: var(--space-sm) var(--space-md);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    background-color: var(--color-bg-alt);
+    color: var(--color-primary);
+  }
+
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .nav-link.active {
+    color: var(--color-primary);
+    background-color: var(--color-bg-alt);
+    font-weight: 600;
+  }
+
+  /* Mobile styles */
+  @media (max-width: 767px) {
+    .main-nav {
+      justify-content: flex-end;
+    }
+
+    .nav-toggle {
+      display: flex;
+    }
+
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: var(--space-sm);
+      flex-direction: column;
+      align-items: stretch;
+      background-color: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      box-shadow: var(--shadow-md);
+      min-width: 200px;
+      z-index: 100;
+    }
+
+    .nav-menu.is-open {
+      display: flex;
+    }
+
+    .nav-menu .nav-link {
+      width: 100%;
+      justify-content: flex-start;
+      padding: var(--space-sm) var(--space-md);
+    }
+  }
+</style>
+
+<script>
+  function initNavigation() {
+    const toggle = document.querySelector('.nav-toggle') as HTMLButtonElement | null;
+    const menu = document.querySelector('#nav-menu') as HTMLElement | null;
+
+    if (!toggle || !menu) return;
+
+    function openMenu() {
+      toggle!.setAttribute('aria-expanded', 'true');
+      menu!.classList.add('is-open');
+    }
+
+    function closeMenu() {
+      toggle!.setAttribute('aria-expanded', 'false');
+      menu!.classList.remove('is-open');
+    }
+
+    function toggleMenu() {
+      const isExpanded = toggle!.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    // Toggle on click
+    toggle.addEventListener('click', toggleMenu);
+
+    // Keyboard support
+    toggle.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+          closeMenu();
+          toggle.focus();
+        }
+      }
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (!toggle.contains(target) && !menu.contains(target)) {
+        closeMenu();
+      }
+    });
+  }
+
+  // Initialize on page load
+  initNavigation();
+
+  // Re-initialize on Astro page transitions (View Transitions)
+  document.addEventListener('astro:after-swap', initNavigation);
+</script>

@@ -1,0 +1,17 @@
+# GitHub repository in owner/repo format
+github_repository = "JacobSteelsmith/resume"
+
+# S3 bucket name from CloudFormation stack output
+s3_bucket_name = "resume-jacob-steelsmith-org-bucket"
+
+# CloudFront distribution ID from CloudFormation stack output
+cloudfront_distribution_id = "E1234567890ABC"
+
+# AWS account ID (treat as sensitive)
+aws_account_id = "123456789012"
+
+# AWS region
+aws_region = "us-east-1"
+
+# Deployment environment
+environment = "production"

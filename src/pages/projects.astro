@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEOHead from '../components/SEOHead.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+---
+
+<BaseLayout class="projects-page">
+  <SEOHead
+    slot="head"
+    title="Projects | Jacob Steelsmith"
+    description="Key projects showcasing AWS cloud engineering, infrastructure as code, and full-stack development expertise."
+  />
+
+  <h1>Projects</h1>
+  <p class="page-intro">
+    A selection of projects demonstrating cloud architecture, infrastructure as code, and modern web development.
+  </p>
+
+  <section class="projects-grid" aria-label="Project list">
+    <ProjectCard
+      title="Resume Site (IaC)"
+      description="This site — a fully automated resume platform deployed with CloudFormation and Terraform. Features a RAG-powered AI chatbot using Amazon Bedrock Knowledge Bases, CloudFront CDN with OAC, GitHub Actions CI/CD with OIDC authentication, and a static Astro frontend."
+      technologies={['Astro', 'CloudFormation', 'Terraform', 'Amazon Bedrock', 'Lambda', 'API Gateway', 'S3', 'CloudFront']}
+      sourceUrl="https://github.com/JacobSteelsmith/resume"
+      liveUrl="https://resume.jacob.steelsmith.org"
+    />
+
+    <ProjectCard
+      title="Blog & Portfolio"
+      description="A long-running technical blog and portfolio site built with Astro and deployed via AWS Amplify. Features content-driven architecture with Markdown posts, automated builds on push, and custom domain configuration."
+      technologies={['Astro', 'AWS Amplify', 'TypeScript', 'Markdown', 'CloudFormation']}
+      sourceUrl="https://github.com/JacobSteelsmith/portfolio"
+      liveUrl="https://jacob.steelsmith.org"
+    />
+
+    <ProjectCard
+      title="Serverless Event Processing Pipeline"
+      description="An event-driven data processing pipeline built on AWS serverless services. Ingests events via API Gateway, processes them with Lambda and Step Functions, stores results in DynamoDB, and delivers notifications through SNS."
+      technologies={['AWS Lambda', 'Step Functions', 'DynamoDB', 'API Gateway', 'SNS', 'Python', 'CloudFormation']}
+    />
+
+    <ProjectCard
+      title="Cloud Infrastructure Monitoring Dashboard"
+      description="A real-time monitoring solution for multi-account AWS environments. Aggregates CloudWatch metrics, Cost Explorer data, and Security Hub findings into a unified dashboard with automated alerting via SNS and PagerDuty integration."
+      technologies={['CloudWatch', 'EventBridge', 'Lambda', 'SNS', 'Python', 'Terraform', 'Docker']}
+    />
+  </section>
+</BaseLayout>
+
+<style>
+  :global(.projects-page) {
+    max-width: 960px;
+  }
+
+  .page-intro {
+    margin-bottom: var(--space-2xl);
+    color: var(--color-text-muted);
+  }
+
+  .projects-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

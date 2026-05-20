@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# astro generated types
+.astro/
+
+# Terraform
+infrastructure/terraform/.terraform/
+infrastructure/terraform/*.tfstate
+infrastructure/terraform/*.tfstate.backup
+infrastructure/terraform/terraform.tfvars
+infrastructure/terraform/.terraform.lock.hcl
+
+# AWS
+.aws-sam/
+samconfig.toml
+cdk.out/
+
+# Lambda build artifacts
+src/lambda/**/node_modules/
+src/lambda/**/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

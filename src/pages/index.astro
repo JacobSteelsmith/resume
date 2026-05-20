@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEOHead from '../components/SEOHead.astro';
+---
+
+<BaseLayout>
+  <SEOHead
+    slot="head"
+    title="Jacob Steelsmith | Cloud Platform Engineer"
+    description="Cloud platform engineer specializing in AWS, serverless architectures, distributed systems, and technical leadership. Building scalable infrastructure with Infrastructure-as-Code."
+    ogType="website"
+  />
+
+  <section class="hero" aria-labelledby="hero-heading">
+    <h1 id="hero-heading">Jacob Steelsmith</h1>
+    <p class="hero-subtitle">Cloud Platform Engineer</p>
+    <p class="hero-intro">
+      I design and build scalable cloud infrastructure on AWS, specializing in serverless architectures,
+      distributed systems, and Infrastructure-as-Code. I bring technical leadership to teams delivering
+      reliable, cost-effective platforms that power modern applications.
+    </p>
+  </section>
+
+  <section class="highlights" aria-labelledby="highlights-heading">
+    <h2 id="highlights-heading">What I Do</h2>
+    <ul class="highlights-grid" role="list">
+      <li class="highlight-card">
+        <h3>AWS Cloud Architecture</h3>
+        <p>
+          Deep expertise across the AWS ecosystem including compute, storage, networking, and managed services.
+          Designing solutions that balance performance, cost, and operational simplicity.
+        </p>
+      </li>
+      <li class="highlight-card">
+        <h3>Serverless &amp; Distributed Systems</h3>
+        <p>
+          Building event-driven architectures with Lambda, Step Functions, EventBridge, and SQS.
+          Designing systems that scale automatically and handle failure gracefully.
+        </p>
+      </li>
+      <li class="highlight-card">
+        <h3>Infrastructure as Code</h3>
+        <p>
+          Defining reproducible infrastructure with CloudFormation and Terraform. Automating deployments
+          through CI/CD pipelines with OIDC authentication and least-privilege access.
+        </p>
+      </li>
+      <li class="highlight-card">
+        <h3>Technical Leadership</h3>
+        <p>
+          Guiding engineering teams through architecture decisions, code reviews, and best practices.
+          Mentoring developers and establishing standards that improve delivery velocity and system reliability.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-heading">
+    <h2 id="cta-heading">Learn More</h2>
+    <p>
+      Explore my <a href="/resume/">resume</a> for a detailed look at my experience,
+      check out my <a href="/projects/">projects</a> to see what I've built,
+      or review the <a href="/architecture/">architecture</a> of this site itself as a demonstration of AWS engineering.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .hero-subtitle {
+    font-size: var(--font-size-xl);
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-top: var(--space-sm);
+  }
+
+  .hero-intro {
+    margin-top: var(--space-lg);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+  }
+
+  .highlights {
+    margin-bottom: var(--space-3xl);
+  }
+
+  .highlights h2 {
+    margin-bottom: var(--space-xl);
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+    list-style: none;
+    padding: 0;
+  }
+
+  .highlight-card {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-alt);
+  }
+
+  .highlight-card h3 {
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-xl);
+  }
+
+  .highlight-card p {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-base);
+  }
+
+  .cta {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .cta h2 {
+    margin-bottom: var(--space-md);
+  }
+
+  .cta p {
+    font-size: var(--font-size-lg);
+  }
+
+  @media (max-width: 768px) {
+    .highlights-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

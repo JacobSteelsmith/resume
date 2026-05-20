@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEOHead from '../components/SEOHead.astro';
+---
+
+<BaseLayout>
+  <SEOHead
+    slot="head"
+    title="Contact | Jacob Steelsmith"
+    description="Get in touch with Jacob Steelsmith. Reach out via email, connect on LinkedIn, or explore projects on GitHub."
+    ogType="website"
+  />
+
+  <section aria-labelledby="contact-heading">
+    <h1 id="contact-heading">Contact</h1>
+    <p class="contact-intro">
+      Interested in working together or have a question? Feel free to reach out through any of the channels below.
+    </p>
+
+    <ul class="contact-list" role="list">
+      <li class="contact-item">
+        <h2>Email</h2>
+        <a href="mailto:jacob@steelsmith.org">jacob@steelsmith.org</a>
+      </li>
+      <li class="contact-item">
+        <h2>LinkedIn</h2>
+        <a href="https://linkedin.com/in/jacobsteelsmith" rel="noopener noreferrer" target="_blank">
+          linkedin.com/in/jacobsteelsmith
+          <span class="visually-hidden">(opens in a new tab)</span>
+        </a>
+      </li>
+      <li class="contact-item">
+        <h2>GitHub</h2>
+        <a href="https://github.com/JacobSteelsmith" rel="noopener noreferrer" target="_blank">
+          github.com/JacobSteelsmith
+          <span class="visually-hidden">(opens in a new tab)</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-intro {
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-2xl);
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+  }
+
+  .contact-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .contact-item {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-alt);
+  }
+
+  .contact-item h2 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .contact-item a {
+    font-size: var(--font-size-lg);
+    word-break: break-all;
+  }
+</style>

@@ -1,0 +1,226 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEOHead from '../components/SEOHead.astro';
+---
+
+<BaseLayout>
+  <SEOHead
+    slot="head"
+    title="Resume | Jacob Steelsmith"
+    description="Resume of Jacob Steelsmith — Cloud Platform Engineer with expertise in AWS, serverless architectures, infrastructure as code, and distributed systems."
+  />
+
+  <h1>Resume</h1>
+
+  <section class="resume-section" aria-labelledby="skills-heading">
+    <h2 id="skills-heading">Skills</h2>
+
+    <h3>Cloud Platforms &amp; Services</h3>
+    <ul class="skill-list">
+      <li>AWS EC2, Lambda, S3, CloudFront, DynamoDB, RDS</li>
+      <li>API Gateway, Step Functions, EventBridge, SQS, SNS</li>
+      <li>Route 53, ACM, CloudWatch, IAM, Bedrock</li>
+      <li>OpenSearch Serverless, WAF, Cognito</li>
+    </ul>
+
+    <h3>Programming Languages</h3>
+    <ul class="skill-list">
+      <li>TypeScript / JavaScript</li>
+      <li>Python</li>
+      <li>Go</li>
+      <li>Java</li>
+      <li>SQL</li>
+    </ul>
+
+    <h3>Frameworks &amp; Tools</h3>
+    <ul class="skill-list">
+      <li>Terraform, CloudFormation, AWS CDK</li>
+      <li>Docker, Kubernetes, ECS</li>
+      <li>GitHub Actions, CI/CD pipelines</li>
+      <li>Astro, React, Node.js</li>
+      <li>Vitest, Jest, fast-check</li>
+    </ul>
+  </section>
+
+  <section class="resume-section" aria-labelledby="experience-heading">
+    <h2 id="experience-heading">Work Experience</h2>
+
+    <article class="experience-item">
+      <h3>Cloud Platform Engineer</h3>
+      <p class="experience-meta">
+        <span class="company">Acme Cloud Solutions</span>
+        <span class="separator" aria-hidden="true">&middot;</span>
+        <time datetime="2021-01">Jan 2021</time> &ndash; Present
+      </p>
+      <ul class="experience-details">
+        <li>Designed and deployed serverless architectures on AWS serving millions of requests daily using Lambda, API Gateway, and DynamoDB</li>
+        <li>Built infrastructure-as-code pipelines with Terraform and CloudFormation, reducing provisioning time by 80%</li>
+        <li>Led migration of monolithic applications to containerized microservices on ECS and Kubernetes</li>
+        <li>Implemented CI/CD workflows with GitHub Actions and OIDC-based authentication for secure, credential-free deployments</li>
+        <li>Mentored junior engineers on cloud architecture patterns and IaC best practices</li>
+      </ul>
+    </article>
+
+    <article class="experience-item">
+      <h3>Software Engineer</h3>
+      <p class="experience-meta">
+        <span class="company">TechStart Inc.</span>
+        <span class="separator" aria-hidden="true">&middot;</span>
+        <time datetime="2018-06">Jun 2018</time> &ndash; <time datetime="2020-12">Dec 2020</time>
+      </p>
+      <ul class="experience-details">
+        <li>Developed full-stack web applications using TypeScript, React, and Node.js</li>
+        <li>Managed AWS infrastructure including EC2, RDS, and S3 for production workloads</li>
+        <li>Introduced automated testing practices, achieving 90%+ code coverage across services</li>
+        <li>Collaborated with product teams to deliver features on tight timelines</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="resume-section" aria-labelledby="certifications-heading">
+    <h2 id="certifications-heading">Certifications</h2>
+    <ul class="certification-list">
+      <li>
+        <strong>AWS Certified Solutions Architect – Professional</strong>
+        <span class="cert-year">2023</span>
+      </li>
+      <li>
+        <strong>AWS Certified Developer – Associate</strong>
+        <span class="cert-year">2022</span>
+      </li>
+      <li>
+        <strong>AWS Certified SysOps Administrator – Associate</strong>
+        <span class="cert-year">2022</span>
+      </li>
+      <li>
+        <strong>HashiCorp Certified: Terraform Associate</strong>
+        <span class="cert-year">2021</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="resume-section" aria-labelledby="accomplishments-heading">
+    <h2 id="accomplishments-heading">Accomplishments</h2>
+    <ul class="accomplishment-list">
+      <li>Reduced cloud infrastructure costs by 40% through right-sizing, reserved instances, and serverless migration</li>
+      <li>Architected a multi-region disaster recovery solution achieving 99.99% uptime SLA</li>
+      <li>Open-source contributor to Terraform AWS provider and CDK constructs</li>
+      <li>Speaker at local AWS meetups on serverless patterns and IaC best practices</li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .resume-section {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .resume-section h2 {
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .resume-section h3 {
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+  }
+
+  .skill-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .skill-list li {
+    background-color: var(--color-bg-alt);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--color-border);
+  }
+
+  .experience-item {
+    margin-bottom: var(--space-xl);
+  }
+
+  .experience-item h3 {
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+  }
+
+  .experience-meta {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .experience-meta .company {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .experience-meta .separator {
+    margin-inline: var(--space-sm);
+  }
+
+  .experience-details {
+    padding-left: var(--space-lg);
+  }
+
+  .experience-details li {
+    margin-bottom: var(--space-sm);
+    max-width: var(--content-max-width);
+  }
+
+  .certification-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .certification-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .certification-list li:last-child {
+    border-bottom: none;
+  }
+
+  .cert-year {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    flex-shrink: 0;
+    margin-left: var(--space-md);
+  }
+
+  .accomplishment-list {
+    padding-left: var(--space-lg);
+  }
+
+  .accomplishment-list li {
+    margin-bottom: var(--space-sm);
+    max-width: var(--content-max-width);
+  }
+
+  @media (max-width: 768px) {
+    .certification-list li {
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .cert-year {
+      margin-left: 0;
+    }
+
+    .skill-list {
+      gap: var(--space-xs);
+    }
+  }
+</style>

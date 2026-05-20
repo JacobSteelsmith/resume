@@ -1,0 +1,85 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  technologies: string[];
+  sourceUrl?: string;
+  liveUrl?: string;
+}
+
+const { title, description, technologies, sourceUrl, liveUrl } = Astro.props;
+---
+
+<article class="project-card">
+  <h3 class="project-card__title">{title}</h3>
+  <p class="project-card__description">{description}</p>
+  <ul class="project-card__tech" aria-label={`Technologies used in ${title}`}>
+    {technologies.map((tech) => (
+      <li class="project-card__tag">{tech}</li>
+    ))}
+  </ul>
+  <div class="project-card__links">
+    {sourceUrl && (
+      <a href={sourceUrl} class="project-card__link" rel="noopener noreferrer">
+        Source Code
+      </a>
+    )}
+    {liveUrl && (
+      <a href={liveUrl} class="project-card__link" rel="noopener noreferrer">
+        Live Site
+      </a>
+    )}
+  </div>
+</article>
+
+<style>
+  .project-card {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-base);
+  }
+
+  .project-card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .project-card__title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .project-card__description {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .project-card__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    list-style: none;
+    margin-bottom: var(--space-md);
+  }
+
+  .project-card__tag {
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .project-card__links {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .project-card__link {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+  }
+</style>
