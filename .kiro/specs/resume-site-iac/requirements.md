@@ -2,22 +2,21 @@
 
 ## Introduction
 
-This document defines the requirements for a resume/portfolio site hosted at `resume.jacob.steelsmith.org`, built in a new repository (`/home/steelsmith/code/resume`). The project demonstrates AWS engineering expertise through a hybrid Infrastructure-as-Code approach: CloudFormation for AWS hosting infrastructure (S3, CloudFront, ACM, Route 53, OAC) and Terraform for cross-platform resources (GitHub configuration, IAM OIDC provider). The site also includes a RAG-based AI chatbot powered by Amazon Bedrock that allows visitors to ask natural language questions about the site owner's career, skills, and projects.
+This document defines the requirements for a resume/portfolio site hosted at `resume.jacob.steelsmith.org`, built in a new repository (`/home/steelsmith/code/resume`). The project demonstrates AWS engineering expertise through a Terraform-only Infrastructure-as-Code approach: all AWS hosting infrastructure (S3, CloudFront, ACM, Route 53, OAC, API Gateway, Lambda, WAF, Bedrock Knowledge Base) and cross-platform resources (GitHub configuration, IAM OIDC provider) are managed by Terraform. The site also includes a RAG-based AI chatbot powered by Amazon Bedrock that allows visitors to ask natural language questions about the site owner's career, skills, and projects.
 
-This project is intentionally separate from the existing blog at `jacob.steelsmith.org` (hosted via AWS Amplify in the `portfolio` repository). Together, the two sites showcase complementary deployment approaches to prospective employers: managed hosting (Amplify) for the blog and full IaC (CloudFormation + Terraform) for the resume site.
+This project is intentionally separate from the existing blog at `jacob.steelsmith.org` (hosted via AWS Amplify in the `portfolio` repository). Together, the two sites showcase complementary deployment approaches to prospective employers: managed hosting (Amplify) for the blog and full IaC (Terraform) for the resume site.
 
-**Infrastructure-as-Code Approach:** CloudFormation is the primary tool for AWS hosting infrastructure (S3, CloudFront, ACM, Route 53, OAC). Terraform is used for cross-platform resources that CloudFormation cannot manage (GitHub repository settings, branch protection rules, GitHub Actions environment secrets/variables) and for the AWS IAM OIDC identity provider setup where Terraform modules (`unfunco/oidc-github/aws`) are more mature and well-tested. The DNS zone `steelsmith.org` is already hosted in Route 53.
+**Infrastructure-as-Code Approach:** Terraform is the sole IaC tool for this project, managing all AWS infrastructure (S3, CloudFront, ACM, Route 53, OAC, API Gateway, Lambda, WAF, Bedrock Knowledge Base) and cross-platform resources (GitHub repository settings, branch protection rules, GitHub Actions environment secrets/variables, IAM OIDC identity provider). The DNS zone `steelsmith.org` is already hosted in Route 53.
 
 ## Glossary
 
 - **Astro_Builder**: The Astro static site generator responsible for reading content and producing static HTML/CSS/JS output
-- **CloudFormation_Stack**: The AWS CloudFormation infrastructure-as-code template defining S3, CloudFront, ACM, Route 53, and OAC resources for the resume site
+- **Terraform_Config**: The Terraform configuration managing all infrastructure for the resume site, including AWS hosting resources (S3, CloudFront, ACM, Route 53, OAC, API Gateway, Lambda, WAF, Bedrock Knowledge Base), IAM OIDC identity provider for GitHub Actions, and cross-platform resources (GitHub repository settings, branch protection, Actions secrets/variables)
 - **CI_CD_Pipeline**: The GitHub Actions workflow responsible for building, testing, and deploying the resume site
 - **CloudFront_Distribution**: The AWS CloudFront CDN distribution serving the static resume site
 - **S3_Bucket**: The AWS S3 bucket storing the built static site assets
 - **OAC_Policy**: The Origin Access Control policy restricting S3 access to CloudFront only
 - **OIDC_Auth**: The OpenID Connect authentication mechanism used by GitHub Actions to assume AWS IAM roles without long-lived credentials
-- **Terraform_Config**: The Terraform configuration managing cross-platform resources (GitHub repository settings, branch protection, Actions secrets/variables) and the AWS IAM OIDC identity provider for GitHub Actions
 - **Ingestion_Pipeline**: The data pipeline that processes content sources (resume, skills, project descriptions, code samples) into vector embeddings and stores them in the Vector_Database
 - **Vector_Database**: The vector store (Amazon Bedrock Knowledge Bases) holding embedded content chunks for semantic retrieval
 - **RAG_Agent**: The Retrieval-Augmented Generation chat agent powered by Amazon Bedrock that answers visitor questions about career, skills, and projects
@@ -38,42 +37,38 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 1. THE Resume_Repository SHALL be initialized with a Git repository containing a `.gitignore` file appropriate for Node.js, Astro, Terraform, and AWS artifacts
 2. THE Resume_Repository SHALL contain a `package.json` with Astro as the primary dependency and build/dev scripts configured
 3. THE Resume_Repository SHALL contain an Astro project structure with `src/`, `public/`, and `astro.config.mjs` configured for fully static output
-4. THE Resume_Repository SHALL contain an `infrastructure/` directory with subdirectories for CloudFormation templates (`infrastructure/template.yaml`) and Terraform configuration (`infrastructure/terraform/`)
+4. THE Resume_Repository SHALL contain an `infrastructure/terraform/` directory with Terraform configuration files managing all AWS and GitHub resources
 5. THE Resume_Repository SHALL contain a `knowledge-base/` directory with subdirectories for content categories (skills, experience, projects, certifications, code-samples)
 6. THE Resume_Repository SHALL contain a `README.md` documenting the project purpose, directory structure, prerequisites, and deployment instructions
 
-### Requirement 2: CloudFormation Infrastructure
+### Requirement 2: Terraform Infrastructure
 
-**User Story:** As a site owner, I want reproducible AWS infrastructure defined in CloudFormation so that the hosting stack is documented, version-controlled, and demonstrates AWS engineering expertise.
-
-#### Acceptance Criteria
-
-1. THE CloudFormation_Stack SHALL provision an S3_Bucket configured for static website hosting with all public access blocked via S3 Block Public Access settings (BlockPublicAcls, BlockPublicPolicy, IgnorePublicAcls, RestrictPublicBuckets all set to true)
-2. THE CloudFormation_Stack SHALL provision a CloudFront_Distribution with the S3_Bucket as origin using OAC_Policy, a default root object of `index.html`, and custom error responses that return `/404.html` with a 404 status for 403 and 404 origin errors
-3. THE CloudFormation_Stack SHALL provision an ACM certificate for `resume.jacob.steelsmith.org` with DNS validation via the existing Route 53 hosted zone for `steelsmith.org`
-4. THE CloudFormation_Stack SHALL provision Route 53 alias records (A and AAAA) in the `steelsmith.org` hosted zone pointing `resume.jacob.steelsmith.org` to the CloudFront_Distribution
-5. THE CloudFormation_Stack SHALL configure the OAC_Policy so that only the CloudFront_Distribution can read objects from the S3_Bucket
-6. THE CloudFormation_Stack SHALL accept the domain name (`resume.jacob.steelsmith.org`) and the Route 53 hosted zone ID for `steelsmith.org` as stack parameters and export the S3_Bucket name, CloudFront_Distribution ID, and CloudFront_Distribution domain name as stack outputs
-7. THE CloudFormation_Stack SHALL be a valid CloudFormation template that passes `aws cloudformation validate-template` without errors
-8. THE CloudFormation_Stack SHALL configure the CloudFront_Distribution to enforce HTTPS with HTTP-to-HTTPS redirect and a minimum TLS version of TLS 1.2
-9. THE CloudFormation_Stack SHALL configure a CloudFront response headers policy that sets Strict-Transport-Security with a max-age of at least 31536000 seconds, X-Content-Type-Options set to nosniff, X-Frame-Options set to DENY, and a Content-Security-Policy header restricting resource loading to same-origin by default with allowances for the Chat_Widget API endpoint
-10. THE CloudFormation_Stack SHALL be deployable in us-east-1 because ACM certificates for CloudFront must reside in that region
-
-### Requirement 3: Terraform Cross-Platform Configuration
-
-**User Story:** As a site owner, I want Terraform to manage GitHub configuration and the OIDC provider so that cross-platform resources are version-controlled and reproducible.
+**User Story:** As a site owner, I want all infrastructure defined in Terraform so that the entire hosting stack, chatbot backend, and GitHub configuration are documented, version-controlled, and demonstrate AWS engineering expertise through a single IaC tool.
 
 #### Acceptance Criteria
 
-1. THE Terraform_Config SHALL provision an IAM OIDC identity provider for GitHub Actions using the `unfunco/oidc-github/aws` module
-2. THE Terraform_Config SHALL provision an IAM role assumable by GitHub Actions via OIDC that permits only s3:PutObject, s3:DeleteObject, and s3:ListBucket on the specific S3_Bucket and cloudfront:CreateInvalidation on the specific CloudFront_Distribution
-3. THE Terraform_Config SHALL provision GitHub branch protection on the main branch requiring at least one pull request review approval and passing CI status checks before merge
-4. THE Terraform_Config SHALL provision GitHub Actions environment secrets (AWS_ACCOUNT_ID, OIDC_ROLE_ARN) and environment variables (S3_BUCKET_NAME, CLOUDFRONT_DIST_ID) for the production environment
-5. THE Terraform_Config SHALL use an S3 backend for state storage with DynamoDB for state locking
-6. THE Terraform_Config SHALL accept the GitHub repository name, S3 bucket name, CloudFront distribution ID, and AWS account ID as input variables
-7. THE Terraform_Config SHALL export the OIDC role ARN as an output value
+1. THE Terraform_Config SHALL provision an S3_Bucket configured for static website hosting with all public access blocked via S3 Block Public Access settings (BlockPublicAcls, BlockPublicPolicy, IgnorePublicAcls, RestrictPublicBuckets all set to true)
+2. THE Terraform_Config SHALL provision a CloudFront_Distribution with the S3_Bucket as origin using OAC_Policy, a default root object of `index.html`, and custom error responses that return `/404.html` with a 404 status for 403 and 404 origin errors
+3. THE Terraform_Config SHALL provision an ACM certificate for `resume.jacob.steelsmith.org` with DNS validation via the existing Route 53 hosted zone for `steelsmith.org`
+4. THE Terraform_Config SHALL provision Route 53 alias records (A and AAAA) in the `steelsmith.org` hosted zone pointing `resume.jacob.steelsmith.org` to the CloudFront_Distribution
+5. THE Terraform_Config SHALL configure the OAC_Policy so that only the CloudFront_Distribution can read objects from the S3_Bucket
+6. THE Terraform_Config SHALL accept the domain name (`resume.jacob.steelsmith.org`) and the Route 53 hosted zone ID for `steelsmith.org` as input variables and export the S3_Bucket name, CloudFront_Distribution ID, and CloudFront_Distribution domain name as outputs
+7. THE Terraform_Config SHALL pass `terraform validate` without errors
+8. THE Terraform_Config SHALL configure the CloudFront_Distribution to enforce HTTPS with HTTP-to-HTTPS redirect and a minimum TLS version of TLS 1.2
+9. THE Terraform_Config SHALL configure a CloudFront response headers policy that sets Strict-Transport-Security with a max-age of at least 31536000 seconds, X-Content-Type-Options set to nosniff, X-Frame-Options set to DENY, and a Content-Security-Policy header restricting resource loading to same-origin by default with allowances for the Chat_Widget API endpoint
+10. THE Terraform_Config SHALL be deployable in us-east-1 because ACM certificates for CloudFront must reside in that region
+11. THE Terraform_Config SHALL provision an IAM OIDC identity provider for GitHub Actions using the `unfunco/oidc-github/aws` module
+12. THE Terraform_Config SHALL provision an IAM role assumable by GitHub Actions via OIDC that permits only s3:PutObject, s3:DeleteObject, and s3:ListBucket on the specific S3_Bucket and cloudfront:CreateInvalidation on the specific CloudFront_Distribution
+13. THE Terraform_Config SHALL provision GitHub branch protection on the main branch requiring at least one pull request review approval and passing CI status checks before merge
+14. THE Terraform_Config SHALL provision GitHub Actions environment secrets (AWS_ACCOUNT_ID, OIDC_ROLE_ARN) and environment variables (S3_BUCKET_NAME, CLOUDFRONT_DIST_ID) for the production environment
+15. THE Terraform_Config SHALL use an S3 backend for state storage with DynamoDB for state locking
+16. THE Terraform_Config SHALL accept the GitHub repository name, S3 bucket name, CloudFront distribution ID, and AWS account ID as input variables
+17. THE Terraform_Config SHALL export the OIDC role ARN as an output value
+18. THE Terraform_Config SHALL enable HTTP/2 and HTTP/3 on the CloudFront_Distribution for optimal transfer performance
+19. THE Terraform_Config SHALL enable compression for text-based content types on the CloudFront_Distribution
+20. THE Terraform_Config SHALL tag all resources with an Environment tag for cost tracking and resource identification
 
-### Requirement 4: GitHub Actions CI/CD Pipeline
+### Requirement 3: GitHub Actions CI/CD Pipeline
 
 **User Story:** As a site owner, I want a GitHub Actions pipeline with OIDC authentication so that deployments are automated and use short-lived credentials instead of stored secrets.
 
@@ -84,10 +79,10 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 3. WHEN a deployment to S3 completes, THE CI_CD_Pipeline SHALL create a CloudFront invalidation for all paths to clear cached content
 4. WHEN a pull request is opened or updated against the main branch, THE CI_CD_Pipeline SHALL build the Astro site and run linting and validation checks without deploying
 5. IF the build or deployment fails, THEN THE CI_CD_Pipeline SHALL halt the pipeline and report the failure via the GitHub Actions workflow status on the associated commit or pull request
-6. THE CI_CD_Pipeline SHALL validate the CloudFormation template using `aws cloudformation validate-template` as part of the CI checks on pull requests
+6. THE CI_CD_Pipeline SHALL validate the Terraform configuration using `terraform validate` and `terraform plan` as part of the CI checks on pull requests
 7. THE CI_CD_Pipeline SHALL use pinned versions for all GitHub Actions and dependencies to ensure reproducible builds
 
-### Requirement 5: Static Resume Site Generation
+### Requirement 4: Static Resume Site Generation
 
 **User Story:** As a site owner, I want the resume site generated as static HTML at build time so that no server-side runtime is required and pages load quickly.
 
@@ -102,7 +97,7 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 7. THE Astro_Builder SHALL include the Architecture page in the site's main navigation
 8. IF the build completes successfully, THEN THE Astro_Builder SHALL produce a self-contained output directory where all internal links resolve to files within that directory
 
-### Requirement 6: SEO and Metadata
+### Requirement 5: SEO and Metadata
 
 **User Story:** As a site owner, I want proper SEO metadata on every page so that search engines and social media platforms display my content correctly.
 
@@ -114,7 +109,7 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 4. THE Astro_Builder SHALL produce a `robots.txt` file allowing all crawlers and referencing the sitemap location
 5. THE Astro_Builder SHALL produce an XML sitemap at `/sitemap.xml` conforming to the Sitemaps.org protocol 0.9 schema, listing all pages on the site
 
-### Requirement 7: Responsive Layout and Accessibility
+### Requirement 6: Responsive Layout and Accessibility
 
 **User Story:** As a visitor, I want the site to be readable and visually polished on any device so that I have a good experience on mobile, tablet, and desktop.
 
@@ -126,7 +121,7 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 4. THE Astro_Builder SHALL produce valid semantic HTML with no skipped heading levels, alt text on all non-decorative images, and ARIA labels on all interactive elements that lack visible text labels
 5. THE Astro_Builder SHALL produce pages that achieve a Lighthouse Accessibility score of 90 or above when tested in mobile mode on the homepage and resume page
 
-### Requirement 8: Performance
+### Requirement 7: Performance
 
 **User Story:** As a site owner, I want the site to load quickly so that it demonstrates engineering quality and provides a good visitor experience.
 
@@ -134,10 +129,8 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 
 1. THE Astro_Builder SHALL produce pages that achieve a Lighthouse Performance score of 90 or above when tested in mobile mode on the homepage and resume page
 2. THE Astro_Builder SHALL produce pages with a total page weight under 300KB for the homepage and static pages (excluding images within content sections)
-3. THE CloudFront_Distribution SHALL enable HTTP/2 and HTTP/3 for optimal transfer performance
-4. THE CloudFront_Distribution SHALL enable compression for text-based content types
 
-### Requirement 9: Knowledge Base Content Authoring
+### Requirement 8: Knowledge Base Content Authoring
 
 **User Story:** As a site owner, I want to maintain a structured knowledge base of my skills, experience, and projects so that the RAG agent has rich, accurate content to draw from when answering visitor questions.
 
@@ -149,7 +142,7 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 4. THE Knowledge_Base SHALL include content covering the resume page, dedicated skills/project description files, and representative code samples, with each content source identifiable by a source-type metadata field
 5. WHEN a commit modifying files in the `knowledge-base/` directory is pushed to the repository, THE Ingestion_Pipeline SHALL be manually triggerable via a CI workflow dispatch or CLI command to re-process the changed content
 
-### Requirement 10: Vector Embedding Ingestion Pipeline
+### Requirement 9: Vector Embedding Ingestion Pipeline
 
 **User Story:** As a site owner, I want an automated pipeline that converts my knowledge base content into vector embeddings so that the RAG agent can perform semantic search over my career information.
 
@@ -161,12 +154,12 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 4. THE Ingestion_Pipeline SHALL generate vector embeddings for each chunk using an Amazon Bedrock embedding model
 5. THE Ingestion_Pipeline SHALL store the embeddings and associated metadata (source type, language, project, skill area) in the Vector_Database
 6. WHEN the Ingestion_Pipeline processes updated content, THE Ingestion_Pipeline SHALL delete all embeddings previously generated from the affected source documents and store newly generated embeddings in their place
-7. THE Ingestion_Pipeline SHALL be defined as infrastructure-as-code in the CloudFormation_Stack or as a reproducible script within the Resume_Repository
+7. THE Ingestion_Pipeline SHALL be defined as infrastructure-as-code in the Terraform_Config or as a reproducible script within the Resume_Repository
 8. IF the Amazon Bedrock embedding API call fails or a Knowledge_Base source file is empty or unparseable, THEN THE Ingestion_Pipeline SHALL log the error with the affected source file identifier, skip the failed item, and continue processing remaining content
 9. WHEN the Ingestion_Pipeline completes a run, THE Ingestion_Pipeline SHALL produce a summary report indicating the number of source files processed, chunks generated, embeddings stored, and any files that were skipped due to errors
 10. WHEN processing content, THE Ingestion_Pipeline SHALL filter out and exclude any content chunk that references "National Testing Network", "NTN", "Ergometrics", or any encryption keys, and SHALL NOT store embeddings for excluded chunks in the Vector_Database
 
-### Requirement 11: RAG Chat Agent on Amazon Bedrock
+### Requirement 10: RAG Chat Agent on Amazon Bedrock
 
 **User Story:** As a visitor, I want to ask natural language questions about the site owner's career, skills, and projects so that I can quickly find relevant information without reading every page.
 
@@ -181,7 +174,7 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 7. THE RAG_Agent SHALL be deployed as a Lambda function invoked through the API_Gateway
 8. IF the Bedrock_Model is unavailable or returns an error, THEN THE RAG_Agent SHALL return a message indicating the service is temporarily unavailable
 
-### Requirement 12: Chat Widget Frontend
+### Requirement 11: Chat Widget Frontend
 
 **User Story:** As a visitor, I want an embedded chat interface on the resume site so that I can ask questions without leaving the page.
 
@@ -196,7 +189,7 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 7. THE Chat_Widget SHALL store conversation history in sessionStorage so that navigating between pages preserves the chat history within the same browser session
 8. THE Chat_Widget SHALL be keyboard-operable with touch targets of at least 44x44px and include appropriate ARIA labels for accessibility
 
-### Requirement 13: API Gateway and Rate Limiting
+### Requirement 12: API Gateway and Rate Limiting
 
 **User Story:** As a site owner, I want rate limiting on the chat API so that the service is protected from abuse and costs remain predictable.
 
@@ -207,9 +200,9 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 3. THE API_Gateway SHALL enforce a per-IP rate limit of 10 requests per minute
 4. WHEN a request exceeds the rate limit, THE API_Gateway SHALL return an HTTP 429 response with a JSON body containing an error message indicating the rate limit has been exceeded
 5. THE API_Gateway SHALL validate that the `question` field is present and does not exceed 500 characters, returning an HTTP 400 response for invalid requests
-6. THE API_Gateway SHALL be defined as infrastructure-as-code within the CloudFormation_Stack or a separate nested stack
+6. THE API_Gateway SHALL be defined as infrastructure-as-code within the Terraform_Config
 
-### Requirement 14: Security Baseline
+### Requirement 13: Security Baseline
 
 **User Story:** As a site owner, I want security best practices applied from the start so that the site and infrastructure are protected against common threats.
 
@@ -218,5 +211,5 @@ This project is intentionally separate from the existing blog at `jacob.steelsmi
 1. THE S3_Bucket SHALL block all public access and allow reads only through the OAC_Policy
 2. THE CI_CD_Pipeline SHALL use OIDC_Auth with an IAM role scoped to only the permissions required for deployment (s3:PutObject, s3:DeleteObject, s3:ListBucket on the specific bucket; cloudfront:CreateInvalidation on the specific distribution)
 3. THE Terraform_Config SHALL store no secrets in plain text within the repository; all sensitive values SHALL be provided via environment variables or secret management
-4. THE CloudFormation_Stack SHALL tag all resources with an Environment tag for cost tracking and resource identification
+4. THE Terraform_Config SHALL tag all resources with an Environment tag for cost tracking and resource identification
 5. THE RAG_Agent Lambda function SHALL use an execution role with least-privilege permissions scoped to the specific Bedrock Knowledge Base and model resources it requires

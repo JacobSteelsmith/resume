@@ -1,0 +1,700 @@
+---
+---
+
+<div class="chat-widget" id="chat-widget">
+  <button
+    class="chat-trigger"
+    id="chat-trigger"
+    type="button"
+    aria-label="Open chat assistant"
+    aria-expanded="false"
+    aria-controls="chat-panel"
+  >
+    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </button>
+
+  <div
+    class="chat-panel"
+    id="chat-panel"
+    role="dialog"
+    aria-label="Chat assistant"
+    aria-hidden="true"
+  >
+    <div class="chat-header">
+      <h2 class="chat-title">Ask about Jacob</h2>
+      <button
+        class="chat-close"
+        id="chat-close"
+        type="button"
+        aria-label="Close chat assistant"
+      >
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
+      <p class="chat-welcome">Hi! Ask me anything about Jacob's skills, experience, or projects.</p>
+    </div>
+
+    <div class="chat-error" id="chat-error" role="alert" aria-live="assertive" hidden>
+      <p class="chat-error-text" id="chat-error-text"></p>
+      <button class="chat-retry" id="chat-retry" type="button" aria-label="Retry sending message">
+        Retry
+      </button>
+    </div>
+
+    <div class="chat-loading" id="chat-loading" aria-hidden="true" hidden>
+      <span class="chat-loading-dot"></span>
+      <span class="chat-loading-dot"></span>
+      <span class="chat-loading-dot"></span>
+      <span class="visually-hidden">Loading response...</span>
+    </div>
+
+    <form class="chat-input-form" id="chat-input-form" aria-label="Send a message">
+      <div class="chat-input-wrapper">
+        <textarea
+          class="chat-input"
+          id="chat-input"
+          placeholder="Ask a question..."
+          aria-label="Type your question"
+          maxlength="500"
+          rows="1"
+        ></textarea>
+        <span class="chat-char-count" id="chat-char-count" aria-live="polite" aria-atomic="true">0/500</span>
+      </div>
+      <button
+        class="chat-send"
+        id="chat-send"
+        type="submit"
+        aria-label="Send message"
+      >
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .chat-widget {
+    position: fixed;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    z-index: 1000;
+    font-family: var(--font-sans);
+  }
+
+  /* Trigger button */
+  .chat-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--color-primary);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .chat-trigger:hover {
+    background-color: var(--color-primary-hover);
+    transform: scale(1.05);
+  }
+
+  .chat-trigger:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .chat-trigger[aria-expanded='true'] {
+    display: none;
+  }
+
+  /* Chat panel */
+  .chat-panel {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 360px;
+    max-width: calc(100vw - 2 * var(--space-lg));
+    max-height: min(500px, calc(100vh - 2 * var(--space-lg)));
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .chat-panel[aria-hidden='false'] {
+    display: flex;
+  }
+
+  /* Header */
+  .chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg-alt);
+  }
+
+  .chat-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    margin: 0;
+    line-height: var(--line-height-heading);
+  }
+
+  .chat-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: none;
+    background: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .chat-close:hover {
+    background-color: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .chat-close:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Messages area */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .chat-welcome {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    padding: var(--space-md);
+  }
+
+  /* Message bubbles (added dynamically) */
+  .chat-messages :global(.chat-msg) {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    max-width: 85%;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    word-wrap: break-word;
+  }
+
+  .chat-messages :global(.chat-msg-user) {
+    align-self: flex-end;
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .chat-messages :global(.chat-msg-assistant) {
+    align-self: flex-start;
+    background-color: var(--color-bg-alt);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .chat-messages :global(.chat-msg-sources) {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: var(--space-xs);
+    font-style: italic;
+  }
+
+  /* Error display */
+  .chat-error {
+    display: none;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background-color: #fef2f2;
+    border-top: 1px solid #fecaca;
+    color: #991b1b;
+    font-size: var(--font-size-sm);
+  }
+
+  .chat-error:not([hidden]) {
+    display: flex;
+  }
+
+  .chat-error-text {
+    flex: 1;
+    margin: 0;
+  }
+
+  .chat-retry {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid #fecaca;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: #991b1b;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+  }
+
+  .chat-retry:hover {
+    background-color: #fef2f2;
+  }
+
+  .chat-retry:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Loading indicator */
+  .chat-loading {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .chat-loading:not([hidden]) {
+    display: flex;
+  }
+
+  .chat-loading-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    animation: chat-bounce 1.4s infinite ease-in-out both;
+  }
+
+  .chat-loading-dot:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+
+  .chat-loading-dot:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+
+  @keyframes chat-bounce {
+    0%, 80%, 100% {
+      transform: scale(0);
+    }
+    40% {
+      transform: scale(1);
+    }
+  }
+
+  /* Input form */
+  .chat-input-form {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+  }
+
+  .chat-input-wrapper {
+    flex: 1;
+    position: relative;
+  }
+
+  .chat-input {
+    width: 100%;
+    min-height: 44px;
+    max-height: 120px;
+    padding: var(--space-sm) var(--space-sm);
+    padding-bottom: calc(var(--space-sm) + 1.2em);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-base);
+    resize: none;
+    overflow-y: auto;
+    transition: border-color var(--transition-fast);
+  }
+
+  .chat-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  }
+
+  .chat-input:focus-visible {
+    outline: none;
+  }
+
+  .chat-char-count {
+    position: absolute;
+    bottom: var(--space-xs);
+    right: var(--space-sm);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .chat-char-count.over-limit {
+    color: #991b1b;
+    font-weight: 600;
+  }
+
+  /* Send button */
+  .chat-send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), opacity var(--transition-fast);
+  }
+
+  .chat-send:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+  }
+
+  .chat-send:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .chat-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 480px) {
+    .chat-widget {
+      bottom: var(--space-md);
+      right: var(--space-md);
+    }
+
+    .chat-panel {
+      width: calc(100vw - 2 * var(--space-md));
+      max-height: calc(100vh - 2 * var(--space-md));
+      bottom: 0;
+      right: 0;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      position: fixed;
+      left: var(--space-md);
+    }
+  }
+
+  /* Visually hidden utility (local scope) */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  import { saveConversation, loadConversation, MAX_CHARS, TIMEOUT_MS } from './ChatWidget.ts';
+  import type { ChatMessage, SourceAttribution } from './ChatWidget.ts';
+
+  function initChatWidget() {
+    const widget = document.getElementById('chat-widget');
+    const trigger = document.getElementById('chat-trigger') as HTMLButtonElement | null;
+    const panel = document.getElementById('chat-panel');
+    const closeBtn = document.getElementById('chat-close') as HTMLButtonElement | null;
+    const form = document.getElementById('chat-input-form') as HTMLFormElement | null;
+    const input = document.getElementById('chat-input') as HTMLTextAreaElement | null;
+    const charCount = document.getElementById('chat-char-count');
+    const sendBtn = document.getElementById('chat-send') as HTMLButtonElement | null;
+    const messagesContainer = document.getElementById('chat-messages');
+    const errorContainer = document.getElementById('chat-error');
+    const errorText = document.getElementById('chat-error-text');
+    const retryBtn = document.getElementById('chat-retry') as HTMLButtonElement | null;
+    const loadingIndicator = document.getElementById('chat-loading');
+
+    if (!widget || !trigger || !panel || !closeBtn || !form || !input || !charCount || !sendBtn || !messagesContainer || !errorContainer || !errorText || !retryBtn || !loadingIndicator) return;
+
+    let previousFocusElement: HTMLElement | null = null;
+    let lastQuestion = '';
+    let conversationHistory: ChatMessage[] = [];
+
+    // --- Restore conversation from sessionStorage ---
+    function restoreConversation() {
+      conversationHistory = loadConversation();
+      if (conversationHistory.length > 0) {
+        // Remove welcome message
+        const welcome = messagesContainer.querySelector('.chat-welcome');
+        if (welcome) welcome.remove();
+
+        // Render all stored messages
+        for (const msg of conversationHistory) {
+          renderMessage(msg.role, msg.content, msg.sources);
+        }
+      }
+    }
+
+    // Focus trap elements
+    function getFocusableElements(): HTMLElement[] {
+      const elements = panel.querySelectorAll<HTMLElement>(
+        'button:not([disabled]):not([hidden]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      return Array.from(elements).filter(el => !el.closest('[hidden]'));
+    }
+
+    function openChat() {
+      previousFocusElement = document.activeElement as HTMLElement;
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.setAttribute('aria-hidden', 'false');
+      input.focus();
+    }
+
+    function closeChat() {
+      trigger.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('aria-hidden', 'true');
+      if (previousFocusElement) {
+        previousFocusElement.focus();
+      } else {
+        trigger.focus();
+      }
+    }
+
+    function updateCharCount() {
+      const length = input.value.length;
+      charCount.textContent = `${length}/${MAX_CHARS}`;
+      if (length > MAX_CHARS) {
+        charCount.classList.add('over-limit');
+        sendBtn.disabled = true;
+      } else {
+        charCount.classList.remove('over-limit');
+        sendBtn.disabled = false;
+      }
+    }
+
+    function autoResizeInput() {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    }
+
+    function showError(message: string) {
+      errorText.textContent = message;
+      errorContainer.hidden = false;
+    }
+
+    function hideError() {
+      errorContainer.hidden = true;
+      errorText.textContent = '';
+    }
+
+    function showLoading() {
+      loadingIndicator.hidden = false;
+      loadingIndicator.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideLoading() {
+      loadingIndicator.hidden = true;
+      loadingIndicator.setAttribute('aria-hidden', 'true');
+    }
+
+    /** Render a message bubble in the DOM (does NOT persist to storage). */
+    function renderMessage(role: 'user' | 'assistant', content: string, sources?: SourceAttribution[]) {
+      const msgEl = document.createElement('div');
+      msgEl.classList.add('chat-msg', `chat-msg-${role}`);
+      msgEl.textContent = content;
+
+      if (sources && sources.length > 0) {
+        const sourcesEl = document.createElement('div');
+        sourcesEl.classList.add('chat-msg-sources');
+        sourcesEl.textContent = `Sources: ${sources.map(s => s.title || s.category).join(', ')}`;
+        msgEl.appendChild(sourcesEl);
+      }
+
+      messagesContainer.appendChild(msgEl);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    /** Add a message to the conversation, render it, and persist to sessionStorage. */
+    function addMessage(role: 'user' | 'assistant', content: string, sources?: SourceAttribution[]) {
+      // Remove welcome message if present
+      const welcome = messagesContainer.querySelector('.chat-welcome');
+      if (welcome) welcome.remove();
+
+      renderMessage(role, content, sources);
+
+      // Persist to conversation history
+      const message: ChatMessage = {
+        role,
+        content,
+        sources,
+        timestamp: Date.now(),
+      };
+      conversationHistory.push(message);
+      saveConversation(conversationHistory);
+    }
+
+    async function sendMessage(question: string) {
+      hideError();
+      showLoading();
+      sendBtn.disabled = true;
+      lastQuestion = question;
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+      try {
+        const apiUrl = (window as any).__CHAT_API_URL || '/api/chat';
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          if (response.status === 429) {
+            showError('Rate limit exceeded. Please wait a moment before trying again.');
+          } else if (response.status === 400) {
+            showError('Invalid request. Please check your message and try again.');
+          } else {
+            showError('Something went wrong. Please try again.');
+          }
+          return;
+        }
+
+        const data = await response.json();
+        addMessage('assistant', data.answer, data.sources);
+      } catch (err: any) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError') {
+          showError('Request timed out. Please try again.');
+        } else {
+          showError('Unable to connect. Please check your connection and try again.');
+        }
+      } finally {
+        hideLoading();
+        sendBtn.disabled = input.value.length > MAX_CHARS;
+      }
+    }
+
+    // Event listeners
+    trigger.addEventListener('click', openChat);
+
+    closeBtn.addEventListener('click', closeChat);
+
+    // Keyboard: Escape to close
+    panel.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeChat();
+        return;
+      }
+
+      // Focus trap
+      if (e.key === 'Tab') {
+        const focusable = getFocusableElements();
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    });
+
+    // Character count and auto-resize
+    input.addEventListener('input', () => {
+      updateCharCount();
+      autoResizeInput();
+    });
+
+    // Submit on Enter (Shift+Enter for newline)
+    input.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    // Form submission
+    form.addEventListener('submit', (e: Event) => {
+      e.preventDefault();
+      const question = input.value.trim();
+      if (!question || question.length > MAX_CHARS) return;
+
+      addMessage('user', question);
+      input.value = '';
+      updateCharCount();
+      autoResizeInput();
+      sendMessage(question);
+    });
+
+    // Retry button
+    retryBtn.addEventListener('click', () => {
+      if (lastQuestion) {
+        sendMessage(lastQuestion);
+      }
+    });
+
+    // Initialize char count
+    updateCharCount();
+
+    // Restore previous conversation on init
+    restoreConversation();
+  }
+
+  // Initialize on page load
+  initChatWidget();
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:after-swap', initChatWidget);
+</script>

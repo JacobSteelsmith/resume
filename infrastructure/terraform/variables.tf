@@ -3,16 +3,6 @@ variable "github_repository" {
   type        = string
 }
 
-variable "s3_bucket_name" {
-  description = "The name of the S3 bucket for static site hosting (from CloudFormation output)"
-  type        = string
-}
-
-variable "cloudfront_distribution_id" {
-  description = "The CloudFront distribution ID (from CloudFormation output)"
-  type        = string
-}
-
 variable "aws_account_id" {
   description = "The AWS account ID"
   type        = string
@@ -29,4 +19,20 @@ variable "environment" {
   description = "The deployment environment (e.g., production, staging)"
   type        = string
   default     = "production"
+}
+
+variable "domain_name" {
+  description = "The domain name for the resume site (e.g., resume.jacob.steelsmith.org)"
+  type        = string
+}
+
+variable "hosted_zone_id" {
+  description = "The Route 53 hosted zone ID for the parent domain (steelsmith.org)"
+  type        = string
+}
+
+variable "bedrock_model_id" {
+  description = "The Bedrock foundation model ID for the RAG chatbot (e.g., anthropic.claude-3-haiku-20240307-v1:0)"
+  type        = string
+  default     = "anthropic.claude-3-haiku-20240307-v1:0"
 }

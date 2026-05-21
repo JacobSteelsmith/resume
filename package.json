@@ -10,12 +10,19 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "ingest": "tsx scripts/ingest.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/sitemap": "^3.7.2",
+    "@aws-sdk/client-bedrock-agent": "^3.1051.0",
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.1051.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.1051.0",
+    "@aws-sdk/client-s3": "^3.1051.0",
     "astro": "^6.3.5",
+    "gray-matter": "^4.0.3",
+    "tsx": "^4.22.3",
     "typescript": "^6.0.3"
   },
   "devDependencies": {

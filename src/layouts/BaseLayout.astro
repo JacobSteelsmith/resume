@@ -1,12 +1,14 @@
 ---
 import '../styles/global.css';
 import Navigation from '../components/Navigation.astro';
+import ChatWidget from '../components/ChatWidget.astro';
 
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+const chatApiUrl = import.meta.env.PUBLIC_CHAT_API_URL || '';
 ---
 
 <!doctype html>
@@ -33,5 +35,12 @@ const { class: className } = Astro.props;
         <p>&copy; {new Date().getFullYear()} Jacob Steelsmith. All rights reserved.</p>
       </slot>
     </footer>
+
+    {chatApiUrl && (
+      <script is:inline define:vars={{ chatApiUrl }}>
+        window.__CHAT_API_URL = chatApiUrl;
+      </script>
+    )}
+    <ChatWidget />
   </body>
 </html>
