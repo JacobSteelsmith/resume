@@ -50,4 +50,17 @@ data "aws_iam_policy_document" "deploy" {
       aws_cloudfront_distribution.site.arn,
     ]
   }
+
+  statement {
+    sid    = "LambdaDeploy"
+    effect = "Allow"
+
+    actions = [
+      "lambda:UpdateFunctionCode",
+    ]
+
+    resources = [
+      aws_lambda_function.chat_handler.arn,
+    ]
+  }
 }

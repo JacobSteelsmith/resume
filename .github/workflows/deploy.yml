@@ -106,6 +106,15 @@ jobs:
       - name: Deploy to S3
         run: aws s3 sync dist/ s3://${{ vars.S3_BUCKET_NAME }} --delete
 
+      - name: Deploy Lambda function
+        working-directory: lambda/chat-handler
+        run: |
+          npm ci --omit=dev
+          zip -r ../../function.zip .
+          aws lambda update-function-code \
+            --function-name ${{ vars.LAMBDA_FUNCTION_NAME }} \
+            --zip-file fileb://../../function.zip
+
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \

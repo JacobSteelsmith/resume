@@ -72,3 +72,10 @@ resource "github_actions_environment_variable" "chat_api_url" {
   variable_name = "PUBLIC_CHAT_API_URL"
   value         = "${aws_api_gateway_stage.prod.invoke_url}/chat"
 }
+
+resource "github_actions_environment_variable" "lambda_function_name" {
+  repository    = local.repo_name
+  environment   = github_repository_environment.production.environment
+  variable_name = "LAMBDA_FUNCTION_NAME"
+  value         = aws_lambda_function.chat_handler.function_name
+}

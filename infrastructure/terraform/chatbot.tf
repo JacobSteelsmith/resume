@@ -208,6 +208,7 @@ resource "aws_lambda_function" "chat_handler" {
       KNOWLEDGE_BASE_ID = aws_bedrockagent_knowledge_base.resume.id
       BEDROCK_MODEL_ID  = var.bedrock_model_id
       BEDROCK_REGION    = var.aws_region
+      ALLOWED_ORIGIN    = "https://${var.domain_name}"
     }
   }
 
