@@ -505,6 +505,55 @@ resource "aws_opensearchserverless_collection" "kb" {
   }
 }
 
+# --- OpenSearch Provider (for creating the vector index) ---
+
+provider "opensearch" {
+  url                   = aws_opensearchserverless_collection.kb.collection_endpoint
+  healthcheck           = false
+  aws_region            = var.aws_region
+  sign_aws_requests     = true
+  aws_signature_service = "aoss"
+}
+
+# --- Vector Index in OpenSearch Serverless ---
+
+resource "opensearch_index" "kb_vector" {
+  name               = "bedrock-knowledge-base-default-index"
+  number_of_shards   = "2"
+  number_of_replicas = "0"
+  index_knn          = true
+  force_destroy      = true
+
+  mappings = jsonencode({
+    properties = {
+      "bedrock-knowledge-base-default-vector" = {
+        type      = "knn_vector"
+        dimension = 1024
+        method = {
+          name       = "hnsw"
+          engine     = "faiss"
+          parameters = {
+            m               = 16
+            ef_construction = 512
+          }
+          space_type = "l2"
+        }
+      }
+      "AMAZON_BEDROCK_METADATA" = {
+        type  = "text"
+        index = false
+      }
+      "AMAZON_BEDROCK_TEXT_CHUNK" = {
+        type = "text"
+      }
+    }
+  })
+
+  depends_on = [
+    aws_opensearchserverless_collection.kb,
+  ]
+}
+
 # --- Bedrock Knowledge Base ---
 
 resource "aws_bedrockagent_knowledge_base" "resume" {
@@ -542,6 +591,7 @@ resource "aws_bedrockagent_knowledge_base" "resume" {
 
   depends_on = [
     aws_opensearchserverless_collection.kb,
+    opensearch_index.kb_vector,
   ]
 
   tags = {

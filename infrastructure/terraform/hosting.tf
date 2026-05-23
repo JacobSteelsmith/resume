@@ -1,7 +1,7 @@
 # --- Provider Variable for cert. CloudFront requires the cert to be in us-east-1 ---
 
 provider "aws" {
-  alias = "us_east_1"
+  alias  = "us_east_1"
   region = "us-east-1"
 }
 
@@ -70,7 +70,7 @@ resource "aws_s3_bucket_policy" "site" {
 # --- ACM Certificate ---
 
 resource "aws_acm_certificate" "site" {
-  provider = aws.us_east_1
+  provider          = aws.us_east_1
   domain_name       = var.domain_name
   validation_method = "DNS"
 
@@ -101,6 +101,7 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "site" {
+  provider                = aws.us_east_1
   certificate_arn         = aws_acm_certificate.site.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
