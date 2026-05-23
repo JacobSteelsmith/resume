@@ -1,124 +1,131 @@
-# Resume Site — resume.jacob.steelsmith.org
+# resume.jacob.steelsmith.org
 
-A resume/portfolio site demonstrating AWS engineering expertise through a Terraform-only Infrastructure-as-Code approach. The site uses Astro for static generation, Terraform for all infrastructure (AWS hosting and cross-platform resources), and includes a RAG-based AI chatbot powered by Amazon Bedrock Knowledge Bases.
+A resume and portfolio site demonstrating AWS engineering expertise through a Terraform-only Infrastructure-as-Code approach. Built with Astro for static generation, Terraform for all infrastructure, and a RAG-powered AI chatbot using Amazon Bedrock. Companion to the [portfolio/blog site](https://jacob.steelsmith.org) which uses AWS Amplify for managed hosting.
+
+## Architecture
+
+### Static Site Layer
+
+- **Framework**: Astro (static HTML, zero client-side JS by default)
+- **Hosting**: S3 + CloudFront CDN
+- **Access Control**: Origin Access Control (OAC) restricts S3 to CloudFront only
+- **URL Rewriting**: CloudFront Function appends `/index.html` to directory paths
+- **Security Headers**: HSTS, CSP (with `unsafe-inline` for Astro), X-Frame-Options, X-Content-Type-Options
+- **SSL**: ACM certificate in us-east-1 via aliased Terraform provider
+- **Protocols**: HTTP/2 and HTTP/3 enabled
+
+### RAG Chatbot
+
+- **Knowledge Base**: Amazon Bedrock with Titan Text Embeddings V2 (1024 dimensions)
+- **Vector Store**: OpenSearch Serverless (AOSS) with HNSW/faiss index
+- **Generation**: Claude Haiku 4.5 via cross-region inference profile (`us.anthropic.claude-haiku-4-5-20251001-v1:0`)
+- **API**: API Gateway (REST) → Lambda (Node.js ESM) → Bedrock RetrieveAndGenerate
+- **Rate Limiting**: WAF (10 req/min per-IP via rate-based rule) + API Gateway usage plan (100 req/min global)
+- **Data Source**: Markdown files in `knowledge-base/`, auto-synced and ingested on deploy
+- **CORS**: Lambda returns headers (required with AWS_PROXY integration)
+
+### CI/CD Pipeline (GitHub Actions)
+
+1. Push to `master` triggers workflow
+2. OIDC authenticates to AWS (no stored credentials, environment-based subject claim)
+3. Astro site builds with `PUBLIC_CHAT_API_URL` injected
+4. Static assets sync to S3
+5. Lambda function zipped and deployed via `update-function-code`
+6. Knowledge base content syncs to S3, ingestion job triggered
+7. CloudFront cache invalidated
+
+### Infrastructure as Code (Terraform)
+
+Single root module managing all resources:
+
+| File | Resources |
+|------|-----------|
+| `versions.tf` | Provider constraints (AWS, GitHub, OpenSearch), S3 backend |
+| `hosting.tf` | S3, CloudFront, ACM (us-east-1 alias), Route 53, CloudFront Function, response headers |
+| `chatbot.tf` | API Gateway, WAF, Lambda, Bedrock Knowledge Base, OpenSearch Serverless (collection + policies + index), IAM |
+| `oidc.tf` | GitHub OIDC provider, IAM deploy role with least-privilege permissions |
+| `github.tf` | Branch protection, Actions environment secrets/variables |
+| `variables.tf` | Input variables |
+| `outputs.tf` | Exported values |
+
+### Key Design Decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| IaC tool | Terraform only | Single state, unified workflow, one language for all resources |
+| Hosting | S3 + CloudFront | Full control, global CDN, cost-effective |
+| Auth | OIDC | Short-lived credentials, no secret rotation, environment-aware subjects |
+| Vector store | OpenSearch Serverless | Managed scaling, Bedrock-native, AOSS signature service |
+| Rate limiting | WAF + API Gateway | Per-IP via WAF, global via usage plans |
+| Model access | Inference profile | Cross-region routing, `*` region in IAM for foundation model ARN |
+| Index management | opensearch provider | Declarative, `aws_signature_service = "aoss"`, `lifecycle { ignore_changes }` for drift |
 
 ## Directory Structure
 
 ```
-resume/
-├── src/                          # Astro source files
-│   ├── layouts/                  # Page layouts
-│   ├── pages/                    # Site pages (index, resume, projects, architecture, contact)
-│   ├── components/               # Reusable UI components
-│   ├── styles/                   # Global styles and design tokens
-│   └── lambda/
-│       └── chat-handler/         # RAG chatbot Lambda function source
-├── public/                       # Static assets served as-is
+├── src/
+│   ├── pages/              # Site pages (index, resume, projects, 404)
+│   ├── components/         # UI components (ChatWidget, SEOHead, etc.)
+│   ├── layouts/            # BaseLayout
+│   └── utils/              # Utilities
+├── lambda/
+│   └── chat-handler/       # RAG chatbot Lambda (Node.js ESM)
+├── knowledge-base/         # RAG content sources
+│   ├── experience/         # Work experience
+│   ├── skills/             # Technical skills
+│   ├── projects/           # Project descriptions
+│   └── certifications/     # Certifications and education
 ├── infrastructure/
-│   └── terraform/                # Terraform config (all AWS resources + GitHub OIDC, IAM, branch protection, Actions secrets)
-├── knowledge-base/               # RAG chatbot content sources
-│   ├── skills/                   # Technical skills documentation
-│   ├── experience/               # Work experience descriptions
-│   ├── projects/                 # Project descriptions
-│   ├── certifications/           # Certification details
-│   └── code-samples/             # Representative code samples with language metadata
+│   └── terraform/          # All Terraform configuration
+│       └── apply.sh        # Wrapper script (exports credentials for opensearch provider)
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml            # CI/CD pipeline (build, validate, deploy)
-├── astro.config.mjs              # Astro configuration
-├── package.json                  # Node.js dependencies and scripts
-└── README.md                     # This file
+│       └── deploy.yml      # CI/CD pipeline
+├── tests/                  # Vitest tests
+└── astro.config.mjs
 ```
 
 ## Prerequisites
 
-- **Node.js** >= 18.x
-- **npm** >= 9.x
-- **AWS CLI** v2 configured with appropriate credentials
-- **Terraform** >= 1.5
-- **AWS Account** with Route 53 hosted zone for `steelsmith.org`
+- Node.js >= 18
+- Terraform >= 1.5
+- AWS CLI v2 with `aws login` configured
+- `uv` (for AWS MCP server, optional)
 
 ## Getting Started
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run tests
-npm test
+npm run dev       # Start dev server
+npm run build     # Build for production
+npm test          # Run tests
 ```
 
 ## Infrastructure Deployment
 
-All infrastructure is managed by Terraform in a single root module under `infrastructure/terraform/`. This includes AWS hosting resources (S3, CloudFront, ACM, Route 53, API Gateway, Lambda, WAF, Bedrock Knowledge Base) and cross-platform resources (GitHub OIDC provider, IAM deploy role, branch protection, Actions secrets/variables).
-
 ```bash
 cd infrastructure/terraform
-
-# Copy and fill in variables
-cp terraform.tfvars.example terraform.tfvars
-
-# Initialize (uses S3 backend with DynamoDB state locking)
+cp terraform.tfvars.example terraform.tfvars  # Fill in values
 terraform init
-
-# Plan changes
-terraform plan
-
-# Apply
-terraform apply
+./apply.sh        # Exports credentials and runs terraform apply
+./apply.sh plan   # Preview changes
 ```
 
-### Key Terraform Files
+The `apply.sh` script exports AWS credentials as environment variables before running Terraform. This is required because the `opensearch-project/opensearch` provider doesn't support the `aws login` credential type directly.
 
-| File | Purpose |
-|------|---------|
-| `versions.tf` | Provider constraints, S3 backend configuration |
-| `variables.tf` | Input variables (domain, hosted zone, environment, etc.) |
-| `oidc.tf` | GitHub OIDC provider and IAM deploy role |
-| `github.tf` | Branch protection, Actions environment secrets/variables |
-| `hosting.tf` | S3 bucket, CloudFront, ACM, Route 53, security headers |
-| `chatbot.tf` | API Gateway, WAF, Lambda, Bedrock Knowledge Base |
-| `outputs.tf` | Exported values (bucket name, distribution ID, API endpoint) |
+## Companion Project
 
-## CI/CD Pipeline
+The **portfolio site** ([jacob.steelsmith.org](https://jacob.steelsmith.org)) uses the same Astro framework but with AWS Amplify for managed hosting. Together they demonstrate two deployment strategies:
 
-The GitHub Actions workflow (`.github/workflows/deploy.yml`) handles:
-
-- **On push to main**: Build Astro site → OIDC auth → S3 sync → CloudFront invalidation
-- **On pull request**: Build verification → Terraform validation and plan
-
-Authentication uses GitHub OIDC to assume an IAM role with least-privilege permissions — no long-lived AWS credentials stored in the repository.
-
-## Architecture
-
-This project uses a Terraform-only IaC approach, managing all resources in a single root module:
-
-| Resource Category | Managed By | Rationale |
-|-------------------|-----------|-----------|
-| AWS hosting (S3, CloudFront, ACM, Route 53) | Terraform | Unified state, consistent tagging, single tool for all resources |
-| Chatbot (API Gateway, Lambda, WAF, Bedrock) | Terraform | Same module enables cross-resource references |
-| GitHub config (OIDC, branch protection, Actions secrets) | Terraform | Cross-platform resources in the same workflow |
-
-Together with the blog at `jacob.steelsmith.org` (AWS Amplify), this demonstrates both managed hosting and full IaC approaches.
-
-## RAG Chatbot
-
-The site includes an AI chatbot that answers visitor questions about career, skills, and projects:
-
-1. **Knowledge Base**: Structured Markdown/code files in `knowledge-base/`
-2. **Ingestion**: Content chunked and embedded via Amazon Titan Text Embeddings V2
-3. **Retrieval**: Semantic search via Bedrock Knowledge Bases (OpenSearch Serverless)
-4. **Generation**: Conversational responses via Claude 3 Haiku, grounded in retrieved context
-5. **Frontend**: Embedded chat widget with sessionStorage conversation history
+| Aspect | Portfolio (Amplify) | Resume (Terraform) |
+|--------|--------------------|--------------------|
+| Deployment | Git push → auto-build | Git push → GitHub Actions pipeline |
+| Infrastructure | Fully managed | Fully codified |
+| SSL | Amplify-managed | ACM + aliased provider |
+| CDN | Amplify CDN | CloudFront |
+| Ops overhead | Minimal | Moderate (state management, IAM) |
+| Flexibility | Limited | Full control |
+| AI features | None | RAG chatbot |
 
 ## License
 
