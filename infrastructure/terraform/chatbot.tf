@@ -550,6 +550,10 @@ resource "opensearch_index" "kb_vector" {
     }
   })
 
+  lifecycle {
+    ignore_changes = [mappings]
+  }
+
   depends_on = [
     aws_opensearchserverless_collection.kb,
   ]
