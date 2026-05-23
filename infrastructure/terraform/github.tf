@@ -32,14 +32,14 @@ resource "github_actions_environment_secret" "aws_account_id" {
   repository      = local.repo_name
   environment     = github_repository_environment.production.environment
   secret_name     = "AWS_ACCOUNT_ID"
-  plaintext_value = var.aws_account_id
+  value = var.aws_account_id
 }
 
 resource "github_actions_environment_secret" "oidc_role_arn" {
   repository      = local.repo_name
   environment     = github_repository_environment.production.environment
   secret_name     = "OIDC_ROLE_ARN"
-  plaintext_value = module.oidc_github.iam_role_arn
+  value = module.oidc_github.iam_role_arn
 }
 
 # --- GitHub Actions Environment Variables ---
