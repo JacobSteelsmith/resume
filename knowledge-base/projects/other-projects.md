@@ -6,67 +6,61 @@ title: Other Notable Projects
 
 # Other Notable Projects
 
+## Remote Proctoring Platform (National Testing Network)
+
+Built in approximately 3 weeks during COVID disruptions, this platform replaced a $50K vendor solution and enabled continued business operations.
+
+### Architecture
+- AWS Kinesis Video Streams for video capture and streaming
+- Backend services for session management and monitoring
+- Real-time video processing
+
+### Impact
+- Saved $50K in vendor costs
+- Enabled business continuity during COVID-19
+- Delivered in ~3 weeks from concept to production
+
+## Real-Time Video Platform (National Testing Network)
+
+A streaming and recording platform for testing workflows.
+
+### Architecture
+- LiveKit for WebRTC-based video streaming
+- Kubernetes (EKS) with Helm for container orchestration
+- Recording and playback workflows
+
+### Technologies
+- LiveKit, Kubernetes, EKS, Helm
+- Real-time streaming architecture
+
+## MySQL-to-RDS Data API Middleware Proxy (National Testing Network)
+
+A middleware proxy that enables standard MySQL clients to connect to AWS RDS Data API, bridging the gap between traditional database tooling and serverless database access.
+
+### Impact
+- Improved developer workflows by allowing familiar MySQL tools
+- Enabled serverless database usage patterns
+- Reduced operational complexity
+
 ## Technical Blog (jacob.steelsmith.org)
 
-A long-running technical blog hosted on AWS Amplify, showcasing a complementary deployment approach to the resume site.
+A long-running technical blog hosted on AWS Amplify, showcasing web development and cloud engineering topics spanning Jacob's 20+ year career.
 
 ### Architecture
 - Astro-based static site with content collections
 - AWS Amplify for managed hosting and CI/CD
 - Automatic builds triggered by Git pushes
-- Custom domain with SSL via Amplify
 
-### Purpose
-Demonstrates managed hosting approach (Amplify) as a contrast to the full IaC approach (Terraform) used for the resume site. Together, both sites showcase different AWS deployment strategies to prospective employers.
+## Platform Modernization (National Testing Network)
 
-### Technologies
-- Astro, TypeScript
-- AWS Amplify
-- Markdown content collections
-- GitHub integration
+Led the modernization of a monolithic ColdFusion application to AWS-based distributed architecture.
 
-## Infrastructure Automation Modules
+### Approach
+- Incremental migration from monolith to serverless and API-based services
+- React frontend replacing legacy server-rendered pages
+- AWS services (Lambda, API Gateway, RDS) replacing on-premises infrastructure
 
-A collection of reusable Terraform modules for common AWS patterns.
-
-### Modules Developed
-- Static site hosting (S3 + CloudFront + ACM + Route 53)
-- Serverless API (API Gateway + Lambda + IAM)
-- VPC with public/private subnets and NAT gateways
-- ECS Fargate service with load balancer
-- GitHub OIDC provider and deploy role
-
-### Design Principles
-- Minimal required inputs with sensible defaults
-- Consistent tagging and naming conventions
-- Security best practices built-in (encryption, least-privilege)
-- Comprehensive outputs for cross-module composition
-
-### Technologies
-- Terraform (HCL)
-- AWS (multi-service)
-- GitHub Actions for module testing
-
-## Serverless Data Pipeline
-
-An event-driven data processing pipeline built entirely on AWS serverless services.
-
-### Architecture
-- S3 event notifications trigger Lambda functions
-- Step Functions orchestrate multi-stage processing
-- DynamoDB for state tracking and metadata
-- SNS/SQS for decoupled communication
-- CloudWatch for monitoring and alerting
-
-### Key Features
-- Zero idle cost (fully serverless)
-- Automatic scaling with concurrent Lambda executions
-- Dead letter queues for failed processing
-- Structured logging with correlation IDs
-
-### Technologies
-- AWS Lambda (Python)
-- AWS Step Functions
-- Amazon DynamoDB
-- Amazon S3, SNS, SQS
-- Terraform for infrastructure
+### Impact
+- Improved deployment efficiency by ~40%
+- Enabled scalable, independent service development
+- Reduced operational burden through managed services

@@ -274,11 +274,12 @@ data "aws_iam_policy_document" "chat_lambda_policy" {
 
     actions = [
       "bedrock:InvokeModel",
+      "bedrock:GetInferenceProfile",
     ]
 
     resources = [
-      "arn:aws:bedrock:${var.aws_region}::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
-      "arn:aws:bedrock:${var.aws_region}::inference-profile/${var.bedrock_model_id}",
+      "arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "arn:aws:bedrock:${var.aws_region}:${var.aws_account_id}:inference-profile/${var.bedrock_model_id}",
     ]
   }
 

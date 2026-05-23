@@ -6,68 +6,41 @@ title: Frameworks, Tools, and Technologies
 
 # Frameworks, Tools, and Technologies
 
-## Infrastructure as Code
+## Backend & APIs
+- REST API design and implementation
+- Backend services and data modeling
+- Transactional systems supporting high-volume workflows
+- Middleware development (MySQL-to-RDS Data API proxy)
 
-### Terraform
-- Primary IaC tool for all new infrastructure projects
-- Multi-provider configurations: AWS, GitHub, Cloudflare
-- Module development and composition patterns
-- State management with remote backends (S3 + DynamoDB)
-- Workspace-based environment management
-- Import and migration of existing resources
+## Frontend
+- React for modern UI development
+- Modern JavaScript frameworks
 
-### AWS CDK
-- TypeScript-based infrastructure definitions
-- Construct library development
-- Stack composition and cross-stack references
+## Real-Time Systems
+- LiveKit for video streaming and recording
+- Kubernetes (EKS) with Helm for container orchestration
+- AWS Kinesis Video Streams for remote proctoring
 
-## Web Frameworks
+## Testing
+- Playwright for end-to-end testing
+- pytest for unit and integration testing
+- Automated testing in CI/CD pipelines
 
-### Astro
-- Static site generation with zero-JS by default
-- Content collections and Markdown processing
-- Component islands for interactive elements
-- SEO optimization with sitemap and meta tag generation
-- Integration with deployment pipelines
+## DevOps and CI/CD
+- CI/CD pipeline implementation
+- Git-based workflows
+- Automated deployment and release management
+- GitHub Actions
 
-### React
-- Component-based UI development
-- State management with hooks and context
-- Server-side rendering and static generation via Next.js
+## AI & Automation
+- Agentic AI development using Kiro
+- MCP (Model Context Protocol) servers for AI-assisted development
+- RAG (Retrieval-Augmented Generation) with Amazon Bedrock
+- AI-assisted development workflows for team productivity
 
-## Testing Frameworks
-
-### Vitest
-- Unit testing for TypeScript applications
-- Fast execution with native ESM support
-- Integration with coverage tools
-
-### fast-check
-- Property-based testing for TypeScript
-- Generator composition for complex data types
-- Shrinking for minimal counterexamples
-
-## DevOps and CI/CD Tools
-
-### GitHub Actions
-- Workflow authoring with OIDC authentication
-- Matrix builds and reusable workflows
-- Environment-based deployment gates
-- Artifact management and caching strategies
-
-### Docker
-- Multi-stage builds for optimized images
-- Container orchestration with ECS/Fargate
-- Local development environments
-
-## Monitoring and Observability
-
-### CloudWatch
-- Custom metrics and dashboards
-- Log aggregation and analysis
-- Alarm configuration and notification routing
-
-### OpenTelemetry
-- Distributed tracing instrumentation
-- Metrics collection and export
-- Context propagation across services
+## Systems Architecture
+- Distributed systems design
+- Event-driven architecture
+- Serverless architecture patterns
+- Platform modernization (monolith to microservices)
+- Real-time streaming systems

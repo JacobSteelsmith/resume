@@ -17,44 +17,28 @@ This resume site (resume.jacob.steelsmith.org) is a portfolio project demonstrat
 - Hosted on S3 with CloudFront CDN distribution
 - Origin Access Control (OAC) restricts S3 access to CloudFront only
 - Custom security headers: HSTS, CSP, X-Frame-Options, X-Content-Type-Options
-- HTTP/2 and HTTP/3 enabled for optimal performance
-- Custom 404 error page handling
-
-### Infrastructure as Code
-- Single Terraform root module managing all resources
-- AWS resources: S3, CloudFront, ACM, Route 53, API Gateway, Lambda, WAF, Bedrock Knowledge Base
-- GitHub resources: OIDC provider, branch protection, Actions secrets/variables
-- S3 backend with DynamoDB state locking
-- Environment tagging for cost tracking
-
-### CI/CD Pipeline
-- GitHub Actions with OIDC authentication (no stored credentials)
-- Automated build and deploy on push to main
-- PR validation with Terraform plan and Astro build checks
-- Pinned action versions for reproducibility
+- CloudFront Function for directory index rewriting
 
 ### RAG Chatbot
 - Amazon Bedrock Knowledge Base with Titan Text Embeddings V2
-- OpenSearch Serverless vector store (auto-provisioned)
-- Lambda function for retrieval and response generation
-- API Gateway with WAF rate limiting (100 req/min global, 10 req/min per-IP)
-- Content filtering for sensitive information
+- OpenSearch Serverless vector store
+- Lambda function for retrieval and response generation using Claude Haiku 4.5
+- API Gateway with WAF rate limiting
 - Source attribution in responses
 
-## Design Decisions
+### CI/CD Pipeline
+- GitHub Actions with OIDC authentication (no stored credentials)
+- Automated build, deploy, and knowledge base ingestion on push to master
+- Lambda function deployment
+- CloudFront cache invalidation
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| IaC tool | Terraform only | Single state, unified workflow, one language for all resources |
-| Hosting | S3 + CloudFront | Cost-effective, globally distributed, serverless |
-| Authentication | OIDC (no stored keys) | Short-lived credentials, no secret rotation needed |
-| Vector store | Bedrock managed | Reduced operational overhead |
-| Rate limiting | WAF + API Gateway | Per-IP via WAF, global via usage plans |
+### Infrastructure as Code
+- Single Terraform root module managing all AWS and GitHub resources
+- OpenSearch provider for vector index management
+- S3 backend with state locking
 
 ## Technologies
-- Terraform (HCL)
-- Astro (TypeScript)
-- AWS Lambda (TypeScript)
-- Amazon Bedrock (Claude 3 Haiku, Titan Embeddings V2)
-- GitHub Actions
-- Vitest + fast-check (testing)
+- Terraform (HCL), Astro (TypeScript), AWS Lambda (JavaScript)
+- Amazon Bedrock (Claude Haiku 4.5, Titan Embeddings V2)
+- OpenSearch Serverless, API Gateway, CloudFront, S3, WAF
+- GitHub Actions with OIDC

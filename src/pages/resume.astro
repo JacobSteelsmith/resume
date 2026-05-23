@@ -7,38 +7,100 @@ import SEOHead from '../components/SEOHead.astro';
   <SEOHead
     slot="head"
     title="Resume | Jacob Steelsmith"
-    description="Resume of Jacob Steelsmith — Cloud Platform Engineer with expertise in AWS, serverless architectures, infrastructure as code, and distributed systems."
+    description="Resume of Jacob Steelsmith — Staff/Principal Engineer with 20+ years of experience in AI systems, cloud architecture, distributed systems, and engineering leadership."
   />
 
   <h1>Resume</h1>
 
+  <section class="resume-section" aria-labelledby="summary-heading">
+    <h2 id="summary-heading">Professional Summary</h2>
+    <p>Hands-on software engineer and engineering leader with 20+ years of experience architecting and operating scalable cloud, data, and distributed systems. Background spans agentic AI development, AWS serverless architecture, platform modernization, and full-stack application development, with a focus on building reliable systems that support real-world operational workflows at scale.</p>
+    <p>Proven track record delivering high-volume transactional systems, real-time platforms, and production services supporting thousands of users. Experienced in modern development practices including CI/CD, automated testing, and AI-assisted development.</p>
+  </section>
+
   <section class="resume-section" aria-labelledby="skills-heading">
     <h2 id="skills-heading">Skills</h2>
 
-    <h3>Cloud Platforms &amp; Services</h3>
+    <h3>Languages</h3>
     <ul class="skill-list">
-      <li>AWS EC2, Lambda, S3, CloudFront, DynamoDB, RDS</li>
-      <li>API Gateway, Step Functions, EventBridge, SQS, SNS</li>
-      <li>Route 53, ACM, CloudWatch, IAM, Bedrock</li>
-      <li>OpenSearch Serverless, WAF, Cognito</li>
-    </ul>
-
-    <h3>Programming Languages</h3>
-    <ul class="skill-list">
-      <li>TypeScript / JavaScript</li>
+      <li>JavaScript</li>
+      <li>Bash</li>
       <li>Python</li>
-      <li>Go</li>
-      <li>Java</li>
       <li>SQL</li>
+      <li>CFML</li>
+      <li>PHP</li>
     </ul>
 
-    <h3>Frameworks &amp; Tools</h3>
+    <h3>AI &amp; Automation</h3>
     <ul class="skill-list">
-      <li>Terraform, CloudFormation, AWS CDK</li>
-      <li>Docker, Kubernetes, ECS</li>
-      <li>GitHub Actions, CI/CD pipelines</li>
-      <li>Astro, React, Node.js</li>
-      <li>Vitest, Jest, fast-check</li>
+      <li>Agentic AI Development (Kiro)</li>
+      <li>MCP Servers</li>
+      <li>RAG (Amazon Bedrock)</li>
+    </ul>
+
+    <h3>Backend &amp; APIs</h3>
+    <ul class="skill-list">
+      <li>REST APIs</li>
+      <li>Backend services</li>
+      <li>Data modeling</li>
+      <li>Transactional systems</li>
+    </ul>
+
+    <h3>Frontend</h3>
+    <ul class="skill-list">
+      <li>React</li>
+      <li>Modern JavaScript frameworks</li>
+    </ul>
+
+    <h3>Cloud &amp; Infrastructure</h3>
+    <ul class="skill-list">
+      <li>AWS Lambda</li>
+      <li>API Gateway</li>
+      <li>Cognito</li>
+      <li>RDS</li>
+      <li>S3</li>
+      <li>CloudWatch</li>
+      <li>CloudFormation</li>
+      <li>Glue</li>
+      <li>Redshift</li>
+      <li>EKS</li>
+      <li>Kinesis</li>
+      <li>Amplify</li>
+      <li>Serverless architecture</li>
+      <li>Kubernetes</li>
+    </ul>
+
+    <h3>Systems</h3>
+    <ul class="skill-list">
+      <li>Distributed systems</li>
+      <li>Event-driven architecture</li>
+      <li>Real-time streaming</li>
+    </ul>
+
+    <h3>Databases</h3>
+    <ul class="skill-list">
+      <li>MySQL</li>
+      <li>SQL Server</li>
+      <li>DynamoDB</li>
+      <li>Redshift</li>
+      <li>Schema design</li>
+      <li>DBMS management</li>
+    </ul>
+
+    <h3>Tools</h3>
+    <ul class="skill-list">
+      <li>Git</li>
+      <li>CI/CD pipelines</li>
+      <li>Playwright</li>
+      <li>pytest</li>
+    </ul>
+
+    <h3>Leadership</h3>
+    <ul class="skill-list">
+      <li>Hiring</li>
+      <li>Mentoring</li>
+      <li>Performance management</li>
+      <li>Delivery ownership</li>
     </ul>
   </section>
 
@@ -46,66 +108,78 @@ import SEOHead from '../components/SEOHead.astro';
     <h2 id="experience-heading">Work Experience</h2>
 
     <article class="experience-item">
-      <h3>Cloud Platform Engineer</h3>
+      <h3>Director of Information Technology (Engineering &amp; Cloud)</h3>
       <p class="experience-meta">
-        <span class="company">Acme Cloud Solutions</span>
+        <span class="company">National Testing Network</span>
         <span class="separator" aria-hidden="true">&middot;</span>
-        <time datetime="2021-01">Jan 2021</time> &ndash; Present
+        <time datetime="2015-09">Sep 2015</time> &ndash; Present
       </p>
       <ul class="experience-details">
-        <li>Designed and deployed serverless architectures on AWS serving millions of requests daily using Lambda, API Gateway, and DynamoDB</li>
-        <li>Built infrastructure-as-code pipelines with Terraform and CloudFormation, reducing provisioning time by 80%</li>
-        <li>Led migration of monolithic applications to containerized microservices on ECS and Kubernetes</li>
-        <li>Implemented CI/CD workflows with GitHub Actions and OIDC-based authentication for secure, credential-free deployments</li>
-        <li>Mentored junior engineers on cloud architecture patterns and IaC best practices</li>
+        <li>Built and operated customer-facing SaaS platform serving thousands of users, owning availability, performance, and reliability across production systems</li>
+        <li>Built and led engineering teams (up to 7 members), including hiring, mentoring, and establishing development and operational best practices</li>
+        <li>Led modernization from a monolithic ColdFusion application to AWS-based distributed architecture (serverless, APIs, React), improving deployment efficiency by ~40%</li>
+        <li>Built a remote proctoring platform in ~3 weeks using AWS Kinesis Video Streams, replacing a $50K vendor solution and enabling continued operations during COVID disruptions</li>
+        <li>Designed and implemented a real-time video platform using LiveKit, Kubernetes (EKS), and Helm to support streaming and recording workflows</li>
+        <li>Built a middleware proxy enabling standard MySQL clients to connect to AWS RDS Data API, improving developer workflows and enabling serverless database usage</li>
+        <li>Implemented CI/CD pipelines and automated testing using Playwright and pytest, improving release reliability and reducing regression risk</li>
+        <li>Partnered with executive leadership on technical strategy, prioritization, and budgeting decisions</li>
+        <li>Implemented AI-assisted development workflows to improve team productivity and accelerate delivery</li>
       </ul>
     </article>
 
     <article class="experience-item">
-      <h3>Software Engineer</h3>
+      <h3>Senior Web Developer</h3>
       <p class="experience-meta">
-        <span class="company">TechStart Inc.</span>
+        <span class="company">National Testing Network</span>
         <span class="separator" aria-hidden="true">&middot;</span>
-        <time datetime="2018-06">Jun 2018</time> &ndash; <time datetime="2020-12">Dec 2020</time>
+        <time datetime="2013">2013</time> &ndash; <time datetime="2015">2015</time>
       </p>
       <ul class="experience-details">
-        <li>Developed full-stack web applications using TypeScript, React, and Node.js</li>
-        <li>Managed AWS infrastructure including EC2, RDS, and S3 for production workloads</li>
-        <li>Introduced automated testing practices, achieving 90%+ code coverage across services</li>
-        <li>Collaborated with product teams to deliver features on tight timelines</li>
+        <li>Built and maintained 8 high-traffic web applications serving tens of thousands of users with ~99.9% uptime</li>
+        <li>Designed and executed migration from a single-server environment to AWS (Lucee on Elastic Beanstalk, RDS), improving uptime by ~80% and performance by ~60%</li>
+        <li>Developed full-stack applications and backend systems supporting public safety testing and licensing workflows</li>
+        <li>Standardized development practices and built internal frameworks, improving development speed by ~25%</li>
       </ul>
     </article>
+
+    <article class="experience-item">
+      <h3>Software Developer</h3>
+      <p class="experience-meta">
+        <span class="company">Everett Community College</span>
+        <span class="separator" aria-hidden="true">&middot;</span>
+        <time datetime="2005">2005</time> &ndash; <time datetime="2013">2013</time>
+      </p>
+      <ul class="experience-details">
+        <li>Developed and maintained full-stack web applications using CFML, SQL Server, and JavaScript</li>
+        <li>Built backend systems and database-driven applications supporting academic and administrative workflows</li>
+        <li>Designed and implemented application features focused on usability, performance, and maintainability</li>
+      </ul>
+    </article>
+
+    <article class="experience-item">
+      <h3>Instructor &mdash; Database Design (Part-Time)</h3>
+      <p class="experience-meta">
+        <span class="company">Everett Community College</span>
+      </p>
+      <ul class="experience-details">
+        <li>Taught database design and SQL fundamentals across multiple academic quarters</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="resume-section" aria-labelledby="education-heading">
+    <h2 id="education-heading">Education</h2>
+    <p><strong>B.S. Cloud and Network Engineering</strong> &mdash; Western Governors University (expected June 2026)</p>
   </section>
 
   <section class="resume-section" aria-labelledby="certifications-heading">
     <h2 id="certifications-heading">Certifications</h2>
     <ul class="certification-list">
-      <li>
-        <strong>AWS Certified Solutions Architect – Professional</strong>
-        <span class="cert-year">2023</span>
-      </li>
-      <li>
-        <strong>AWS Certified Developer – Associate</strong>
-        <span class="cert-year">2022</span>
-      </li>
-      <li>
-        <strong>AWS Certified SysOps Administrator – Associate</strong>
-        <span class="cert-year">2022</span>
-      </li>
-      <li>
-        <strong>HashiCorp Certified: Terraform Associate</strong>
-        <span class="cert-year">2021</span>
-      </li>
-    </ul>
-  </section>
-
-  <section class="resume-section" aria-labelledby="accomplishments-heading">
-    <h2 id="accomplishments-heading">Accomplishments</h2>
-    <ul class="accomplishment-list">
-      <li>Reduced cloud infrastructure costs by 40% through right-sizing, reserved instances, and serverless migration</li>
-      <li>Architected a multi-region disaster recovery solution achieving 99.99% uptime SLA</li>
-      <li>Open-source contributor to Terraform AWS provider and CDK constructs</li>
-      <li>Speaker at local AWS meetups on serverless patterns and IaC best practices</li>
+      <li><strong>AWS Certified Developer – Associate</strong></li>
+      <li><strong>AWS Certified SysOps Administrator – Associate</strong></li>
+      <li><strong>CompTIA Security+</strong></li>
+      <li><strong>CompTIA Cloud+</strong></li>
+      <li><strong>ITIL Foundation</strong></li>
     </ul>
   </section>
 </BaseLayout>
@@ -182,9 +256,6 @@ import SEOHead from '../components/SEOHead.astro';
   }
 
   .certification-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
     padding: var(--space-sm) 0;
     border-bottom: 1px solid var(--color-border);
   }
@@ -193,32 +264,7 @@ import SEOHead from '../components/SEOHead.astro';
     border-bottom: none;
   }
 
-  .cert-year {
-    color: var(--color-text-muted);
-    font-size: var(--font-size-sm);
-    flex-shrink: 0;
-    margin-left: var(--space-md);
-  }
-
-  .accomplishment-list {
-    padding-left: var(--space-lg);
-  }
-
-  .accomplishment-list li {
-    margin-bottom: var(--space-sm);
-    max-width: var(--content-max-width);
-  }
-
   @media (max-width: 768px) {
-    .certification-list li {
-      flex-direction: column;
-      gap: var(--space-xs);
-    }
-
-    .cert-year {
-      margin-left: 0;
-    }
-
     .skill-list {
       gap: var(--space-xs);
     }

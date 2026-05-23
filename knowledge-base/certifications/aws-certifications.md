@@ -1,42 +1,33 @@
 ---
 source-type: certification
-category: aws-certifications
-title: AWS Certifications
+category: certifications
+title: Certifications and Education
 ---
 
-# AWS Certifications
+# Certifications and Education
 
-## Overview
+## Education
 
-Jacob Steelsmith holds multiple AWS certifications that validate his expertise across cloud architecture, development, and operations. These certifications demonstrate both breadth of AWS knowledge and depth in specific domains.
+### B.S. Cloud and Network Engineering
+Western Governors University — Expected June 2026
 
-## Certifications Held
+## Certifications
 
-### AWS Certified Solutions Architect - Associate
-- Validates ability to design distributed systems on AWS
-- Covers compute, storage, networking, database, and security services
-- Demonstrates understanding of cost optimization and high availability patterns
-- Includes architectural best practices for scalable, resilient applications
+### AWS Certified Developer – Associate
+Validates proficiency in developing and maintaining AWS-based applications, covering Lambda, API Gateway, DynamoDB, S3, CI/CD, monitoring, and troubleshooting.
 
-### AWS Certified Developer - Associate
-- Validates proficiency in developing and maintaining AWS-based applications
-- Covers Lambda, API Gateway, DynamoDB, S3, and other developer services
-- Demonstrates understanding of CI/CD, monitoring, and troubleshooting
-- Includes security best practices for application development
+### AWS Certified SysOps Administrator – Associate
+Validates expertise in deploying, managing, and operating workloads on AWS, covering monitoring, high availability, networking, and security.
 
-### AWS Certified Cloud Practitioner
-- Foundational certification covering AWS Cloud concepts
-- Validates understanding of AWS services, pricing, and support models
-- Demonstrates knowledge of shared responsibility model and cloud economics
+### CompTIA Security+
+Industry-standard certification validating baseline cybersecurity skills including network security, compliance, threats and vulnerabilities, and identity management.
+
+### CompTIA Cloud+
+Validates competency in cloud infrastructure services including deployment, security, troubleshooting, and cloud-based solutions.
+
+### ITIL Foundation
+Demonstrates understanding of IT service management best practices, service lifecycle, and operational processes.
 
 ## Certification Value
 
-These certifications complement hands-on experience by providing validated knowledge of AWS best practices, architectural patterns, and service capabilities. They demonstrate a commitment to continuous learning and staying current with the rapidly evolving AWS platform.
-
-## Continuing Education
-
-Jacob maintains his certifications through regular recertification and stays current with AWS developments through:
-- AWS re:Invent and Summit attendance
-- AWS documentation and whitepapers
-- Hands-on experimentation with new services
-- Community engagement and knowledge sharing
+These certifications complement Jacob's 20+ years of hands-on experience by providing validated knowledge across cloud development, operations, security, and IT service management. They demonstrate breadth across both AWS-specific and vendor-neutral domains.
