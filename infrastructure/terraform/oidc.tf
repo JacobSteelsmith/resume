@@ -7,6 +7,7 @@ module "oidc_github" {
   github_subjects = [
     "${var.github_repository}:ref:refs/heads/master",
     "${var.github_repository}:pull_request",
+    "${var.github_repository}:environment:production",
   ]
 
   iam_role_inline_policies = {
