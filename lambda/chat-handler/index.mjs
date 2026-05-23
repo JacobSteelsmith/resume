@@ -55,7 +55,7 @@ export async function handler(event) {
         type: 'KNOWLEDGE_BASE',
         knowledgeBaseConfiguration: {
           knowledgeBaseId: KNOWLEDGE_BASE_ID,
-          modelArn: `arn:aws:bedrock:${BEDROCK_REGION}::inference-profile/${BEDROCK_MODEL_ID}`,
+          modelArn: BEDROCK_MODEL_ID,
           retrievalConfiguration: {
             vectorSearchConfiguration: {
               numberOfResults: 5,
