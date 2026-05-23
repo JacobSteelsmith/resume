@@ -391,12 +391,118 @@ data "aws_iam_policy_document" "knowledge_base_policy" {
       "arn:aws:bedrock:${var.aws_region}::foundation-model/amazon.titan-embed-text-v2:0",
     ]
   }
+
+  # OpenSearch Serverless access for vector storage
+  statement {
+    sid    = "AOSSAccess"
+    effect = "Allow"
+
+    actions = [
+      "aoss:APIAccessAll",
+    ]
+
+    resources = [
+      aws_opensearchserverless_collection.kb.arn,
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "knowledge_base" {
   name   = "knowledge-base-policy"
   role   = aws_iam_role.knowledge_base.id
   policy = data.aws_iam_policy_document.knowledge_base_policy.json
+}
+
+# --- OpenSearch Serverless Collection for Knowledge Base ---
+
+locals {
+  # AOSS names have a 32-char limit; use a short prefix
+  aoss_name = "resume-kb"
+}
+
+resource "aws_opensearchserverless_security_policy" "kb_encryption" {
+  name = "${local.aoss_name}-enc"
+  type = "encryption"
+
+  policy = jsonencode({
+    Rules = [
+      {
+        Resource     = ["collection/${local.aoss_name}"]
+        ResourceType = "collection"
+      }
+    ]
+    AWSOwnedKey = true
+  })
+}
+
+resource "aws_opensearchserverless_security_policy" "kb_network" {
+  name = "${local.aoss_name}-net"
+  type = "network"
+
+  policy = jsonencode([
+    {
+      Rules = [
+        {
+          Resource     = ["collection/${local.aoss_name}"]
+          ResourceType = "collection"
+        }
+      ]
+      AllowFromPublic = true
+    }
+  ])
+}
+
+resource "aws_opensearchserverless_access_policy" "kb_data" {
+  name = "${local.aoss_name}-data"
+  type = "data"
+
+  policy = jsonencode([
+    {
+      Rules = [
+        {
+          Resource     = ["collection/${local.aoss_name}"]
+          ResourceType = "collection"
+          Permission = [
+            "aoss:CreateCollectionItems",
+            "aoss:DeleteCollectionItems",
+            "aoss:UpdateCollectionItems",
+            "aoss:DescribeCollectionItems"
+          ]
+        },
+        {
+          Resource     = ["index/${local.aoss_name}/*"]
+          ResourceType = "index"
+          Permission = [
+            "aoss:CreateIndex",
+            "aoss:DeleteIndex",
+            "aoss:UpdateIndex",
+            "aoss:DescribeIndex",
+            "aoss:ReadDocument",
+            "aoss:WriteDocument"
+          ]
+        }
+      ]
+      Principal = [
+        aws_iam_role.knowledge_base.arn,
+        "arn:aws:iam::${var.aws_account_id}:root"
+      ]
+    }
+  ])
+}
+
+resource "aws_opensearchserverless_collection" "kb" {
+  name = local.aoss_name
+  type = "VECTORSEARCH"
+
+  depends_on = [
+    aws_opensearchserverless_security_policy.kb_encryption,
+    aws_opensearchserverless_security_policy.kb_network,
+    aws_opensearchserverless_access_policy.kb_data,
+  ]
+
+  tags = {
+    Environment = var.environment
+  }
 }
 
 # --- Bedrock Knowledge Base ---
@@ -423,7 +529,7 @@ resource "aws_bedrockagent_knowledge_base" "resume" {
     type = "OPENSEARCH_SERVERLESS"
 
     opensearch_serverless_configuration {
-      collection_arn    = "arn:aws:aoss:${var.aws_region}:${var.aws_account_id}:collection/auto"
+      collection_arn    = aws_opensearchserverless_collection.kb.arn
       vector_index_name = "bedrock-knowledge-base-default-index"
 
       field_mapping {
@@ -433,6 +539,10 @@ resource "aws_bedrockagent_knowledge_base" "resume" {
       }
     }
   }
+
+  depends_on = [
+    aws_opensearchserverless_collection.kb,
+  ]
 
   tags = {
     Environment = var.environment
