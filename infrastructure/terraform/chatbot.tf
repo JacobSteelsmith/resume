@@ -187,7 +187,7 @@ data "archive_file" "chat_handler_placeholder" {
   output_path = "${path.module}/chat-handler-placeholder.zip"
 
   source {
-    content  = "exports.handler = async (event) => { return { statusCode: 501, body: JSON.stringify({ message: 'Not implemented' }) }; };"
+    content  = "exports.handler = async (event) => { return { statusCode: 501, headers: { 'Access-Control-Allow-Origin': 'https://${var.domain_name}', 'Access-Control-Allow-Headers': 'Content-Type,Authorization', 'Access-Control-Allow-Methods': 'POST,OPTIONS' }, body: JSON.stringify({ message: 'Not implemented' }) }; };"
     filename = "index.js"
   }
 }
