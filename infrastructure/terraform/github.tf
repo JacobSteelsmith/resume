@@ -65,3 +65,10 @@ resource "github_actions_environment_variable" "cloudfront_dist_id" {
   variable_name = "CLOUDFRONT_DIST_ID"
   value         = aws_cloudfront_distribution.site.id
 }
+
+resource "github_actions_environment_variable" "chat_api_url" {
+  repository    = local.repo_name
+  environment   = github_repository_environment.production.environment
+  variable_name = "PUBLIC_CHAT_API_URL"
+  value         = "${aws_api_gateway_stage.prod.invoke_url}/chat"
+}

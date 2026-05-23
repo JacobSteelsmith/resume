@@ -129,10 +129,35 @@ resource "aws_cloudfront_response_headers_policy" "site" {
     }
 
     content_security_policy {
-      content_security_policy = "default-src 'self'; connect-src 'self' https://*.execute-api.us-east-1.amazonaws.com"
+      content_security_policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://*.execute-api.${var.aws_region}.amazonaws.com"
       override                = true
     }
   }
+}
+
+# --- CloudFront Function for Directory Index Rewriting ---
+
+resource "aws_cloudfront_function" "directory_index" {
+  name    = "${replace(var.domain_name, ".", "-")}-dir-index"
+  runtime = "cloudfront-js-2.0"
+  publish = true
+  code    = <<-EOF
+    function handler(event) {
+      var request = event.request;
+      var uri = request.uri;
+
+      // If URI ends with '/' append index.html
+      if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+      }
+      // If URI doesn't have a file extension, append /index.html
+      else if (!uri.includes('.')) {
+        request.uri += '/index.html';
+      }
+
+      return request;
+    }
+  EOF
 }
 
 # --- CloudFront Distribution ---
@@ -169,6 +194,11 @@ resource "aws_cloudfront_distribution" "site" {
     min_ttl                    = 0
     default_ttl                = 86400
     max_ttl                    = 31536000
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.directory_index.arn
+    }
   }
 
   custom_error_response {
