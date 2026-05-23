@@ -4,7 +4,10 @@ module "oidc_github" {
   source  = "unfunco/oidc-github/aws"
   version = "~> 3.0"
 
-  github_subjects = [var.github_repository]
+  github_subjects = [
+    "${var.github_repository}:ref:refs/heads/master",
+    "${var.github_repository}:pull_request",
+  ]
 
   iam_role_inline_policies = {
     deploy = data.aws_iam_policy_document.deploy.json
