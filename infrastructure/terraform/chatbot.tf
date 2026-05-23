@@ -267,6 +267,7 @@ data "aws_iam_policy_document" "chat_lambda_policy" {
   }
 
   # Bedrock InvokeModel - scoped to specific model
+  # Bedrock InvokeModel - scoped to inference profile and underlying model
   statement {
     sid    = "BedrockInvokeModel"
     effect = "Allow"
@@ -276,7 +277,8 @@ data "aws_iam_policy_document" "chat_lambda_policy" {
     ]
 
     resources = [
-      "arn:aws:bedrock:${var.aws_region}::foundation-model/${var.bedrock_model_id}",
+      "arn:aws:bedrock:${var.aws_region}::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "arn:aws:bedrock:${var.aws_region}::inference-profile/${var.bedrock_model_id}",
     ]
   }
 
