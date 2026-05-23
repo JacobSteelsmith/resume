@@ -29,17 +29,25 @@ resource "github_repository_environment" "production" {
 # --- GitHub Actions Environment Secrets ---
 
 resource "github_actions_environment_secret" "aws_account_id" {
-  repository      = local.repo_name
-  environment     = github_repository_environment.production.environment
-  secret_name     = "AWS_ACCOUNT_ID"
-  value = var.aws_account_id
+  repository  = local.repo_name
+  environment = github_repository_environment.production.environment
+  secret_name = "AWS_ACCOUNT_ID"
+  value       = var.aws_account_id
 }
 
 resource "github_actions_environment_secret" "oidc_role_arn" {
-  repository      = local.repo_name
-  environment     = github_repository_environment.production.environment
-  secret_name     = "OIDC_ROLE_ARN"
-  value = module.oidc_github.iam_role_arn
+  repository  = local.repo_name
+  environment = github_repository_environment.production.environment
+  secret_name = "OIDC_ROLE_ARN"
+  value       = module.oidc_github.iam_role_arn
+}
+
+# --- GitHub Actions Repository-Level Secret (for jobs without an environment) ---
+
+resource "github_actions_secret" "oidc_role_arn" {
+  repository  = local.repo_name
+  secret_name = "OIDC_ROLE_ARN"
+  value       = module.oidc_github.iam_role_arn
 }
 
 # --- GitHub Actions Environment Variables ---
