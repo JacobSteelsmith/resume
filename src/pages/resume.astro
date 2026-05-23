@@ -175,11 +175,16 @@ import SEOHead from '../components/SEOHead.astro';
   <section class="resume-section" aria-labelledby="certifications-heading">
     <h2 id="certifications-heading">Certifications</h2>
     <ul class="certification-list">
-      <li><strong>AWS Certified Developer – Associate</strong></li>
-      <li><strong>AWS Certified SysOps Administrator – Associate</strong></li>
-      <li><strong>CompTIA Security+</strong></li>
-      <li><strong>CompTIA Cloud+</strong></li>
-      <li><strong>ITIL Foundation</strong></li>
+      <li><strong>AWS Certified SysOps Administrator – Associate</strong><span class="cert-date">Sep 2025</span></li>
+      <li><strong>AWS Certified Developer – Associate</strong><span class="cert-date">Jul 2025</span></li>
+      <li><strong>ITIL Foundation</strong><span class="cert-date">Oct 2024</span></li>
+      <li><strong>CompTIA Security+</strong><span class="cert-date">Jul 2024</span></li>
+      <li><strong>CompTIA Cloud+</strong><span class="cert-date">Dec 2023</span></li>
+      <li><strong>AWS Certified Cloud Practitioner</strong><span class="cert-date">Oct 2023</span></li>
+      <li><strong>CompTIA Project+</strong><span class="cert-date">Jun 2023</span></li>
+      <li><strong>CompTIA Network+</strong><span class="cert-date">Mar 2023</span></li>
+      <li><strong>Linux Essentials (LPI)</strong><span class="cert-date">Aug 2022</span></li>
+      <li><strong>CompTIA A+</strong><span class="cert-date">Jun 2022</span></li>
     </ul>
   </section>
 </BaseLayout>
@@ -256,12 +261,22 @@ import SEOHead from '../components/SEOHead.astro';
   }
 
   .certification-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
     padding: var(--space-sm) 0;
     border-bottom: 1px solid var(--color-border);
   }
 
   .certification-list li:last-child {
     border-bottom: none;
+  }
+
+  .cert-date {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    flex-shrink: 0;
+    margin-left: var(--space-md);
   }
 
   @media (max-width: 768px) {
