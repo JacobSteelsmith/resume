@@ -19,30 +19,42 @@ import ProjectCard from '../components/ProjectCard.astro';
   <section class="projects-grid" aria-label="Project list">
     <ProjectCard
       title="Resume Site (IaC)"
-      description="This site — a fully automated resume platform with all infrastructure managed by Terraform. Features a RAG-powered AI chatbot using Amazon Bedrock Knowledge Bases, CloudFront CDN with OAC, GitHub Actions CI/CD with OIDC authentication, and a static Astro frontend."
-      technologies={['Astro', 'Terraform', 'Amazon Bedrock', 'Lambda', 'API Gateway', 'S3', 'CloudFront', 'WAF']}
+      description="This site — a fully automated resume platform with all infrastructure managed by Terraform. Features a RAG-powered AI chatbot using Amazon Bedrock, S3 + CloudFront hosting with OAC, GitHub Actions CI/CD with OIDC, and OpenSearch Serverless vector store."
+      technologies={['Astro', 'Terraform', 'Amazon Bedrock', 'OpenSearch Serverless', 'Lambda', 'API Gateway', 'S3', 'CloudFront', 'WAF', 'GitHub Actions']}
       sourceUrl="https://github.com/JacobSteelsmith/resume"
       liveUrl="https://resume.jacob.steelsmith.org"
     />
 
     <ProjectCard
       title="Blog & Portfolio"
-      description="A long-running technical blog and portfolio site built with Astro and deployed via AWS Amplify. Features content-driven architecture with Markdown posts, automated builds on push, and custom domain configuration."
-      technologies={['Astro', 'AWS Amplify', 'TypeScript', 'Markdown', 'CloudFormation']}
+      description="A long-running technical blog and portfolio site built with Astro and deployed via AWS Amplify. Managed hosting with auto-builds on push, zero client-side JavaScript, and Markdown content collections spanning 20 years of posts."
+      technologies={['Astro', 'AWS Amplify', 'TypeScript', 'Markdown', 'Route 53']}
       sourceUrl="https://github.com/JacobSteelsmith/portfolio"
       liveUrl="https://jacob.steelsmith.org"
     />
 
     <ProjectCard
-      title="Serverless Event Processing Pipeline"
-      description="An event-driven data processing pipeline built on AWS serverless services. Ingests events via API Gateway, processes them with Lambda and Step Functions, stores results in DynamoDB, and delivers notifications through SNS."
-      technologies={['AWS Lambda', 'Step Functions', 'DynamoDB', 'API Gateway', 'SNS', 'Python', 'CloudFormation']}
+      title="Remote Proctoring Platform"
+      description="Built in ~3 weeks during COVID disruptions, replacing a $50K vendor solution. Enables remote test proctoring via real-time video streaming with AWS Kinesis Video Streams and custom backend services."
+      technologies={['AWS Kinesis Video Streams', 'Lambda', 'API Gateway', 'JavaScript', 'Real-time streaming']}
     />
 
     <ProjectCard
-      title="Cloud Infrastructure Monitoring Dashboard"
-      description="A real-time monitoring solution for multi-account AWS environments. Aggregates CloudWatch metrics, Cost Explorer data, and Security Hub findings into a unified dashboard with automated alerting via SNS and PagerDuty integration."
-      technologies={['CloudWatch', 'EventBridge', 'Lambda', 'SNS', 'Python', 'Terraform', 'Docker']}
+      title="Real-Time Video Platform"
+      description="A streaming and recording platform for testing workflows using LiveKit on Kubernetes. Supports WebRTC-based video with container orchestration on EKS and Helm-managed deployments."
+      technologies={['LiveKit', 'Kubernetes', 'EKS', 'Helm', 'WebRTC', 'Real-time streaming']}
+    />
+
+    <ProjectCard
+      title="MySQL-to-RDS Data API Proxy"
+      description="A middleware proxy enabling standard MySQL clients to connect to AWS RDS Data API. Bridges traditional database tooling with serverless database access patterns, improving developer workflows."
+      technologies={['AWS RDS Data API', 'MySQL', 'Middleware', 'Serverless']}
+    />
+
+    <ProjectCard
+      title="Platform Modernization"
+      description="Led incremental migration of a monolithic ColdFusion application to AWS-based distributed architecture. Serverless APIs, React frontend, and managed services improved deployment efficiency by ~40%."
+      technologies={['AWS Lambda', 'API Gateway', 'React', 'RDS', 'CFML', 'Terraform']}
     />
   </section>
 </BaseLayout>
