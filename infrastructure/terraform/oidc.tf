@@ -63,4 +63,33 @@ data "aws_iam_policy_document" "deploy" {
       aws_lambda_function.chat_handler.arn,
     ]
   }
+
+  statement {
+    sid    = "KnowledgeBaseS3Sync"
+    effect = "Allow"
+
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      aws_s3_bucket.knowledge_base.arn,
+      "${aws_s3_bucket.knowledge_base.arn}/*",
+    ]
+  }
+
+  statement {
+    sid    = "BedrockIngestion"
+    effect = "Allow"
+
+    actions = [
+      "bedrock:StartIngestionJob",
+    ]
+
+    resources = [
+      aws_bedrockagent_knowledge_base.resume.arn,
+    ]
+  }
 }

@@ -115,6 +115,15 @@ jobs:
             --function-name ${{ vars.LAMBDA_FUNCTION_NAME }} \
             --zip-file fileb://../../function.zip
 
+      - name: Sync knowledge base content to S3
+        run: aws s3 sync knowledge-base/ s3://${{ vars.KB_BUCKET_NAME }} --delete --exclude ".gitkeep"
+
+      - name: Start knowledge base ingestion
+        run: |
+          aws bedrock-agent start-ingestion-job \
+            --knowledge-base-id ${{ vars.KNOWLEDGE_BASE_ID }} \
+            --data-source-id ${{ vars.KB_DATA_SOURCE_ID }}
+
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \

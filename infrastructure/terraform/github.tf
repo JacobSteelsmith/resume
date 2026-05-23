@@ -79,3 +79,24 @@ resource "github_actions_environment_variable" "lambda_function_name" {
   variable_name = "LAMBDA_FUNCTION_NAME"
   value         = aws_lambda_function.chat_handler.function_name
 }
+
+resource "github_actions_environment_variable" "kb_bucket_name" {
+  repository    = local.repo_name
+  environment   = github_repository_environment.production.environment
+  variable_name = "KB_BUCKET_NAME"
+  value         = aws_s3_bucket.knowledge_base.id
+}
+
+resource "github_actions_environment_variable" "knowledge_base_id" {
+  repository    = local.repo_name
+  environment   = github_repository_environment.production.environment
+  variable_name = "KNOWLEDGE_BASE_ID"
+  value         = aws_bedrockagent_knowledge_base.resume.id
+}
+
+resource "github_actions_environment_variable" "kb_data_source_id" {
+  repository    = local.repo_name
+  environment   = github_repository_environment.production.environment
+  variable_name = "KB_DATA_SOURCE_ID"
+  value         = aws_bedrockagent_data_source.resume.data_source_id
+}
