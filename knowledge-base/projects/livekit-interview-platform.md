@@ -76,7 +76,7 @@ A Node.js Lambda function using the livekit-server-sdk that generates JWT access
 
 A Node.js Lambda function that receives webhook events from the LiveKit server for interview session lifecycle tracking. The function processes events including room start/finish, participant join/leave, track publication, and recording status changes. Events are logged to CloudWatch for session monitoring and integration with the interview management system.
 
-### Recording Management (cflivekit)
+### Recording Management
 
 A Node.js Lambda function that manages interview recording operations through the LiveKit Egress API. The function supports two actions:
 - **Record**: Initiates composite track recording (audio + video) with HLS segmented output uploaded directly to S3, using structured file naming based on application and exam identifiers

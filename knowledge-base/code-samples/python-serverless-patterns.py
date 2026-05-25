@@ -136,7 +136,7 @@ def query_applicant_by_id(applicant_id: int) -> Optional[dict]:
     sql = """
         SELECT applicant_id, email, first_name_encrypted, last_name_encrypted,
                created_at, status
-        FROM applicants
+        FROM table
         WHERE applicant_id = :applicant_id
         AND is_active = 1
     """
@@ -212,7 +212,7 @@ def get_authenticated_applicant_id(event: dict) -> Optional[int]:
     # Look up the applicant record by their Cognito sub identifier
     # This maps the auth identity to the application's internal user ID
     sql = """
-        SELECT applicant_id FROM applicants
+        SELECT applicant_id FROM table
         WHERE cognito_sub = :cognito_sub AND is_active = 1
     """
     parameters = [build_parameter("cognito_sub", cognito_sub)]

@@ -25,7 +25,7 @@ Key architectural characteristics of the legacy system:
 
 ### Phase 2: Hybrid Architecture with AWS SAM
 
-Jacob designed the intermediate architecture as a strangler fig pattern implementation using AWS SAM (Serverless Application Model). This phase introduced a React frontend communicating with Python Lambda functions, deployed and managed through SAM templates in the `awscode/nationaltestingnetwork` repository.
+Jacob designed the intermediate architecture as a strangler fig pattern implementation using AWS SAM (Serverless Application Model). This phase introduced a React frontend communicating with Python Lambda functions, deployed and managed through SAM templates in a dedicated serverless repository.
 
 The SAM-based architecture served as the critical bridge:
 - **React frontend** replaced server-rendered pages incrementally
@@ -38,7 +38,7 @@ This intermediate architecture validated the serverless approach at production s
 
 ### Phase 3: Pure Serverless with AWS Amplify Gen2
 
-The final phase achieved full serverless architecture using AWS Amplify Gen2. Jacob applied lessons learned from the SAM phase to build the Candidates Portal as a greenfield serverless application:
+The final phase achieved full serverless architecture using AWS Amplify Gen2. Jacob applied lessons learned from the SAM phase to build a greenfield serverless application:
 - React frontend with Vite build tooling
 - Python Lambda functions (90+) handling all business logic
 - Aurora Serverless MySQL via RDS Data API (eliminating connection pooling complexity)
@@ -94,9 +94,9 @@ The migration transformed deployment practices:
 
 ## Intermediate SAM Architecture
 
-### Repository Structure at awscode/nationaltestingnetwork
+### Repository Structure
 
-The SAM-based intermediate architecture resided in a repository, organized as a multi-service serverless application:
+The SAM-based intermediate architecture resided in a dedicated repository, organized as a multi-service serverless application:
 
 - **SAM template** defining Lambda functions, API Gateway routes, IAM roles, and environment configuration
 - **Python Lambda handlers** implementing business logic for each API endpoint
