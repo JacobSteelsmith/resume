@@ -26,6 +26,18 @@ import ProjectCard from '../components/ProjectCard.astro';
     />
 
     <ProjectCard
+      title="Candidates Portal"
+      description="A full-featured serverless web application with 90+ Python Lambda functions, Aurora Serverless MySQL via RDS Data API, and complete e-commerce with Stripe. Handles candidate registration, exam scheduling, payments, and document management at scale with zero connection pooling overhead."
+      technologies={['React', 'AWS Amplify Gen2', 'Python', 'Lambda', 'Aurora Serverless', 'RDS Data API', 'Cognito', 'Stripe', 'API Gateway']}
+    />
+
+    <ProjectCard
+      title="Dev Data ETL Pipeline"
+      description="A Python-based ETL pipeline that generates safe development datasets from production databases. Extracts schema and data from multiple RDS instances, obfuscates all PII with Faker, and produces SQL dumps maintaining full referential integrity across databases."
+      technologies={['Python', 'AWS RDS', 'Secrets Manager', 'ECS', 'SQL', 'Docker', 'SNS']}
+    />
+
+    <ProjectCard
       title="Blog & Portfolio"
       description="A long-running technical blog and portfolio site built with Astro and deployed via AWS Amplify. Managed hosting with auto-builds on push, zero client-side JavaScript, and Markdown content collections spanning 20 years of posts."
       technologies={['Astro', 'AWS Amplify', 'TypeScript', 'Markdown', 'Route 53']}
