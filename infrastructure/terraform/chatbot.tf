@@ -182,14 +182,10 @@ resource "aws_wafv2_web_acl_association" "chat_api" {
 
 # --- Lambda Function for RAG Agent ---
 
-data "archive_file" "chat_handler_placeholder" {
+data "archive_file" "chat_handler" {
   type        = "zip"
-  output_path = "${path.module}/chat-handler-placeholder.zip"
-
-  source {
-    content  = "exports.handler = async (event) => { return { statusCode: 501, headers: { 'Access-Control-Allow-Origin': 'https://${var.domain_name}', 'Access-Control-Allow-Headers': 'Content-Type,Authorization', 'Access-Control-Allow-Methods': 'POST,OPTIONS' }, body: JSON.stringify({ message: 'Not implemented' }) }; };"
-    filename = "index.js"
-  }
+  source_dir  = "${path.module}/../../lambda/chat-handler"
+  output_path = "${path.module}/chat-handler.zip"
 }
 
 resource "aws_lambda_function" "chat_handler" {
@@ -197,11 +193,11 @@ resource "aws_lambda_function" "chat_handler" {
   description      = "RAG agent handler for resume chat API"
   role             = aws_iam_role.chat_lambda.arn
   handler          = "index.handler"
-  runtime          = "nodejs20.x"
+  runtime          = "nodejs22.x"
   timeout          = 30
   memory_size      = 256
-  filename         = data.archive_file.chat_handler_placeholder.output_path
-  source_code_hash = data.archive_file.chat_handler_placeholder.output_base64sha256
+  filename         = data.archive_file.chat_handler.output_path
+  source_code_hash = data.archive_file.chat_handler.output_base64sha256
 
   environment {
     variables = {
@@ -210,6 +206,10 @@ resource "aws_lambda_function" "chat_handler" {
       BEDROCK_REGION    = var.aws_region
       ALLOWED_ORIGIN    = "https://${var.domain_name}"
     }
+  }
+
+  lifecycle {
+    ignore_changes = [filename, source_code_hash]
   }
 
   tags = {
