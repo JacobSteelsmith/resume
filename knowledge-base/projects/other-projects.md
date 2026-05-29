@@ -1,9 +1,3 @@
----
-source-type: project
-category: portfolio
-title: Other Notable Projects
----
-
 # Other Notable Projects
 
 ## Portfolio & Blog Site (jacob.steelsmith.org)

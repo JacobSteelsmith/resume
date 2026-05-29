@@ -1,9 +1,3 @@
----
-source-type: project
-category: payments
-title: Payment Platform Migrations - Stripe Integration and Multi-Vendor Transitions
----
-
 # Payment Platform Migrations - Stripe Integration and Multi-Vendor Transitions
 
 ## Project Overview

@@ -1,11 +1,3 @@
-# ---
-# source-type: code-sample
-# category: serverless
-# title: Python Serverless Patterns - Candidates Portal Lambda Functions
-# language: python
-# project: candidates-portal
-# ---
-
 """
 Python serverless patterns from the Candidates Portal project.
 These patterns demonstrate Jacob's approach to building secure,

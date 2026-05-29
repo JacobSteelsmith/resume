@@ -455,6 +455,10 @@ resource "aws_s3vectors_index" "kb" {
   dimension       = 1024
   distance_metric = "euclidean"
 
+  metadata_configuration {
+    non_filterable_metadata_keys = ["AMAZON_BEDROCK_TEXT"]
+  }
+
   tags = {
     Environment = var.environment
   }

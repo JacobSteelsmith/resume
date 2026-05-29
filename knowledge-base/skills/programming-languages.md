@@ -1,9 +1,3 @@
----
-source-type: skills
-category: programming
-title: Programming Languages and Development Skills
----
-
 # Programming Languages and Development Skills
 
 ## Primary Languages

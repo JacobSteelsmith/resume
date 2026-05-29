@@ -1,9 +1,3 @@
----
-source-type: project
-category: software-architecture
-title: Shared Components Architecture - Abstraction Layers, Service Decomposition, and Read/Write Splitting
----
-
 # Shared Components Architecture
 
 ## Project Overview

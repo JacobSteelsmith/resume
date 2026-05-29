@@ -1,9 +1,3 @@
----
-source-type: project
-category: developer-productivity
-title: AI-Assisted Development and Testing Infrastructure
----
-
 # AI-Assisted Development and Testing Infrastructure
 
 ## Project Overview

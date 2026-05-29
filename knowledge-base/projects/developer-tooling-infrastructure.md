@@ -1,9 +1,3 @@
----
-source-type: project
-category: devops
-title: Developer Tooling and Infrastructure - Docker, CRM Migration, and Data Analysis
----
-
 # Developer Tooling and Infrastructure - Docker, CRM Migration, and Data Analysis
 
 ## Project Overview

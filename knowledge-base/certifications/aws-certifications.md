@@ -1,9 +1,3 @@
----
-source-type: certification
-category: certifications
-title: Certifications and Education
----
-
 # Certifications and Education
 
 ## Education

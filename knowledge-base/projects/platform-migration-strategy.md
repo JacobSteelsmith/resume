@@ -1,9 +1,3 @@
----
-source-type: project
-category: platform-modernization
-title: Platform Migration Strategy - Incremental Monolith to Serverless Modernization
----
-
 # Platform Migration Strategy - Incremental Monolith to Serverless Modernization
 
 ## Project Overview

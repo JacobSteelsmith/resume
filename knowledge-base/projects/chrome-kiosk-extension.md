@@ -1,9 +1,3 @@
----
-source-type: project
-category: security
-title: Google Chrome Kiosk Extension - Secure Exam Delivery Platform
----
-
 # Google Chrome Kiosk Extension - Secure Exam Delivery Platform
 
 ## Project Overview

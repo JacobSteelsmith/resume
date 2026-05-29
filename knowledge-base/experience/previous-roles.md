@@ -1,9 +1,3 @@
----
-source-type: experience
-category: career-history
-title: Previous Roles and Career Progression
----
-
 # Previous Roles and Career Progression
 
 ## Senior Web Developer - National Testing Network (2013-2015)

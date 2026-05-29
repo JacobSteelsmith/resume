@@ -1,9 +1,3 @@
----
-source-type: project
-category: serverless-architecture
-title: Candidates Portal - React Serverless Application with AWS Amplify Gen2
----
-
 # Candidates Portal - React Serverless Application with AWS Amplify Gen2
 
 ## Project Overview

@@ -1,11 +1,3 @@
-# ---
-# source-type: code-sample
-# category: automation
-# title: Knowledge Base Ingestion Script - Python
-# language: python
-# project: resume-site
-# ---
-
 """
 Example ingestion pipeline script for processing knowledge base content
 into vector embeddings using Amazon Bedrock.

@@ -1,9 +1,3 @@
----
-source-type: skills
-category: frameworks
-title: Frameworks, Tools, and Technologies
----
-
 # Frameworks, Tools, and Technologies
 
 ## Backend & APIs

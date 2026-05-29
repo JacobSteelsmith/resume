@@ -1,9 +1,3 @@
----
-source-type: project
-category: real-time-infrastructure
-title: Virtual Proctoring Standby Queue System - Real-Time Session Management
----
-
 # Virtual Proctoring Standby Queue System
 
 ## Project Overview

@@ -1,9 +1,3 @@
----
-source-type: experience
-category: engineering-leadership
-title: Current Role - Director of Information Technology at National Testing Network
----
-
 # Current Role - Director of Information Technology (Engineering & Cloud)
 
 ## Position Overview

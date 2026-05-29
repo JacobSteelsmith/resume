@@ -1,9 +1,3 @@
----
-source-type: project
-category: real-time-infrastructure
-title: LiveKit Online Interview Platform - EKS Kubernetes Deployment
----
-
 # LiveKit Online Interview Platform - EKS Kubernetes Deployment
 
 ## Project Overview

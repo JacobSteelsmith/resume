@@ -1,9 +1,3 @@
----
-source-type: skills
-category: cloud-platforms
-title: AWS Cloud Platform Expertise
----
-
 # AWS Cloud Platform Expertise
 
 Jacob Steelsmith has deep expertise across the AWS ecosystem, built through years of hands-on production experience migrating and operating systems on AWS.

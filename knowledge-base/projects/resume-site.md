@@ -1,9 +1,3 @@
----
-source-type: project
-category: web-infrastructure
-title: Resume Site - Terraform IaC with RAG Chatbot
----
-
 # Resume Site - Terraform IaC with RAG Chatbot
 
 ## Project Overview

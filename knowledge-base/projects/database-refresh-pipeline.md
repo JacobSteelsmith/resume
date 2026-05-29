@@ -1,9 +1,3 @@
----
-source-type: project
-category: devops
-title: Automated Database Refresh Pipeline - ECS Fargate with Multi-Layer Safety Guardrails
----
-
 # Automated Database Refresh Pipeline
 
 ## Project Overview
