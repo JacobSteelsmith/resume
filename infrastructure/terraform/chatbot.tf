@@ -456,7 +456,7 @@ resource "aws_s3vectors_index" "kb" {
   distance_metric = "euclidean"
 
   metadata_configuration {
-    non_filterable_metadata_keys = ["AMAZON_BEDROCK_TEXT"]
+    non_filterable_metadata_keys = ["AMAZON_BEDROCK_TEXT", "AMAZON_BEDROCK_METADATA"]
   }
 
   tags = {
