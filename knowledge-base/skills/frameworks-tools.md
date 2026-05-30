@@ -1,40 +1,69 @@
 # Frameworks, Tools, and Technologies
 
+## AI & AI-Assisted Engineering
+- AI-assisted SDLC workflows
+- AI Assisted Engineering Workflows
+- MCP (Model Context Protocol) servers for AI-assisted development
+- Retrieval-Augmented Generation (RAG) with Amazon Bedrock
+- Prompt engineering
+- AI-driven test generation
+- AI-assisted infrastructure automation
+- Knowledge ingestion pipelines
+- Vector databases & semantic search
+
 ## Backend & APIs
 - REST API design and implementation
-- Backend services and data modeling
+- Serverless backend development
+- API Gateway design
+- Distributed backend services
+- Event-driven systems
+- Data modeling
 - Transactional systems supporting high-volume workflows
-- Middleware development (MySQL-to-RDS Data API proxy)
+- Authentication & authorization
+- Real-time communication systems
 
 ## Frontend
-- React for modern UI development
+- React
 - Modern JavaScript frameworks
+- Component-driven UI development
+- Responsive web applications
 
-## Real-Time Systems
-- LiveKit for video streaming and recording
-- Kubernetes (EKS) with Helm for container orchestration
-- AWS Kinesis Video Streams for remote proctoring
+## Systems & Architecture
+- Distributed systems
+- Event-driven architecture
+- Real-time streaming platforms
+- Cloud-native application design
+- High-availability systems
+- Observability & monitoring
+- Scalability & reliability engineering
+- Performance optimization
 
-## Testing
+## DevOps & Testing
+- Git
+- CI/CD pipelines
+- GitHub Actions
 - Playwright for end-to-end testing
 - pytest for unit and integration testing
-- Automated testing in CI/CD pipelines
+- Production debugging
+- Monitoring & alerting
+- Incident response
 
-## DevOps and CI/CD
-- CI/CD pipeline implementation
-- Git-based workflows
-- Automated deployment and release management
-- GitHub Actions
+## Security & Compliance
+- PCI compliance
+- IAM least-privilege design
+- Encryption & secure system design
+- Identity management
+- Entra ID / Azure AD
+- Google Workspace administration
 
-## AI & Automation
-- Agentic AI development using Kiro
-- MCP (Model Context Protocol) servers for AI-assisted development
-- RAG (Retrieval-Augmented Generation) with Amazon Bedrock
-- AI-assisted development workflows for team productivity
-
-## Systems Architecture
-- Distributed systems design
-- Event-driven architecture
-- Serverless architecture patterns
-- Platform modernization (monolith to microservices)
-- Real-time streaming systems
+## Leadership
+- Technical leadership
+- Hiring & team building
+- Mentoring & coaching
+- Performance management
+- Cross-functional collaboration
+- Delivery ownership
+- Engineering standards & processes
+- Roadmap planning
+- Budget & vendor management
+- Incident management
