@@ -32,6 +32,8 @@ Jacob Steelsmith has deep expertise across the AWS ecosystem, built through year
 
 ### Monitoring and Operations
 - Amazon CloudWatch: Monitoring, logging, alerting
+- Grafana: Built dashboards and multi-channel alerting over CloudWatch metrics for DynamoDB, ElastiCache (Valkey), Redshift, and RDS in a large corporate environment
+- Amazon ElastiCache (Valkey): Managed cache/state tier monitoring (memory, evictions, hit rate, replication)
 - Production operations: End-to-end ownership including incident response and root-cause resolution
 
 ### Infrastructure as Code
@@ -41,6 +43,7 @@ Jacob Steelsmith has deep expertise across the AWS ecosystem, built through year
 
 ### AI and Machine Learning
 - Amazon Bedrock: RAG (Retrieval-Augmented Generation) architectures
+- Amazon Bedrock AgentCore: production agentic AI (Runtime, Harness, Memory, Identity, Gateway, Observability), with Confluence knowledge retrieval and Microsoft Teams delivery in a large enterprise environment
 - AI Assisted Engineering Workflows with MCP servers
 
 ## Additional Infrastructure

@@ -15,11 +15,16 @@ Jacob Steelsmith currently serves as Director of Information Technology (Enginee
 - Implemented CI/CD pipelines and automated testing using Playwright and pytest, improving release reliability and reducing regression risk
 - Partnered with executive leadership on technical strategy, prioritization, and budgeting decisions
 - Implemented AI-assisted development workflows to improve team productivity and accelerate delivery
+- Built a production agentic AI platform on Amazon Bedrock AgentCore in a large corporate enterprise environment, implementing the agent harness and integrating Confluence as a knowledge source and Microsoft Teams as the delivery channel
+- Designed and implemented Grafana observability dashboards and multi-channel alerting across DynamoDB, ElastiCache (Valkey), Redshift, and RDS in a large corporate environment
 - Owned production systems end-to-end, including monitoring, debugging, incident response, and root-cause resolution
 
 ## Technologies Used
 
-- AWS (Lambda, API Gateway, Cognito, RDS, S3, CloudWatch, CloudFormation, Glue, Redshift, EKS, Kinesis, Amplify)
+- AWS (Lambda, API Gateway, Cognito, RDS, S3, CloudWatch, CloudFormation, Glue, Redshift, EKS, Kinesis, Amplify, ElastiCache/Valkey, DynamoDB)
+- Amazon Bedrock, Bedrock AgentCore (Runtime, Harness, Memory, Identity, Gateway, Observability)
+- Grafana (dashboards, unified alerting, multi-channel notifications)
+- Confluence (REST API, CQL), Microsoft Teams (Bot Framework), Microsoft Graph
 - Kubernetes, Helm, LiveKit
 - JavaScript, Python, Bash, SQL, CFML
 - React, REST APIs

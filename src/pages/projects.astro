@@ -26,6 +26,18 @@ import ProjectCard from '../components/ProjectCard.astro';
     />
 
     <ProjectCard
+      title="Bedrock AgentCore Agents"
+      description="A production agentic AI platform on Amazon Bedrock AgentCore in a large enterprise environment. Implemented the agent harness, with Confluence as the knowledge source (via AgentCore Gateway) and Microsoft Teams as the delivery channel. Uses AgentCore Runtime, Memory, Identity, and Observability for session-isolated, grounded, cited answers."
+      technologies={['Amazon Bedrock AgentCore', 'AgentCore Harness', 'RAG', 'Confluence', 'Microsoft Teams', 'Microsoft Graph', 'OAuth2', 'Python', 'CloudWatch']}
+    />
+
+    <ProjectCard
+      title="Grafana Observability Platform"
+      description="Enterprise data-store monitoring built with Grafana over CloudWatch metrics. Designed dashboards and configured multi-channel, severity-based alerting across DynamoDB, ElastiCache (Valkey), Redshift, and RDS — giving on-call engineers a single pane of glass in a large corporate environment."
+      technologies={['Grafana', 'Amazon CloudWatch', 'DynamoDB', 'ElastiCache (Valkey)', 'Redshift', 'RDS', 'Alerting', 'IAM']}
+    />
+
+    <ProjectCard
       title="Candidate Portal"
       description="A full-featured serverless web application with 90+ Python Lambda functions, Aurora Serverless MySQL via RDS Data API, and complete e-commerce with Stripe. Handles candidate registration, exam scheduling, payments, and document management at scale with zero connection pooling overhead."
       technologies={['React', 'AWS Amplify Gen2', 'Python', 'Lambda', 'Aurora Serverless', 'RDS Data API', 'Cognito', 'Stripe', 'API Gateway']}
