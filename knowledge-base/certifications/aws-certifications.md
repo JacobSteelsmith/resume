@@ -3,7 +3,7 @@
 ## Education
 
 ### B.S. Cloud and Network Engineering
-Western Governors University — Expected June 2026
+Western Governors University
 
 ## AWS Certifications
 
